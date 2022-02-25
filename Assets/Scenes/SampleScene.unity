@@ -831,6 +831,18 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &54284098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54284094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72253a70a61bab243b0928a6b7e225b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &57278410
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1923,7 +1935,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh22976
+  m_Name: pb_Mesh22986
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5133,21 +5145,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed365c59e7b548f489e1012083b16114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onMouseClicked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 54284095}
-        m_TargetAssemblyTypeName: UnityEngine.AI.NavMeshAgent, UnityEngine
-        m_MethodName: set_destination
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  point: {fileID: 2800000, guid: acae51e19692b314e931001309657a40, type: 3}
+  doorway: {fileID: 2800000, guid: db25fcc995650014b86d5ce29c045fe9, type: 3}
+  attack: {fileID: 2800000, guid: edb4bf8e0daf5a643b577c959c6f18a7, type: 3}
+  target: {fileID: 2800000, guid: e4403f3f2caf03d4293735fdc2e771b3, type: 3}
+  arrow: {fileID: 2800000, guid: d18c40c434279fe40bf3514ae48167ca, type: 3}
 --- !u!4 &274233033
 Transform:
   m_ObjectHideFlags: 0

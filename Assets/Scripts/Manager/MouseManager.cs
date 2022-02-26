@@ -42,6 +42,9 @@ public class MouseManager : MonoBehaviour
                 case "Ground":
                     Cursor.SetCursor(target, new Vector2(16, 16), CursorMode.Auto); //hotspot是鼠标中心点的便宜，原点为左上角
                     break;
+                case "Enemy":
+                    Cursor.SetCursor(attack, new Vector2(16, 16), CursorMode.Auto);
+                    break;
             }
         }
     }

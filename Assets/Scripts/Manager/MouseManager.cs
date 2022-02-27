@@ -9,7 +9,8 @@ using UnityEngine.Events;
 public class MouseManager : MonoBehaviour
 {
     public static MouseManager Instance; //单例模式
-    public event Action<Vector3> _onMouseClicked; //鼠标点击的委托
+    public event Action<Vector3> ONMouseClicked; //鼠标点击的委托
+    public event Action<GameObject> ONEnemyClicked; //鼠标点击敌人的委托 
     public Texture2D point, doorway, attack, target, arrow;
 
     private RaycastHit _hitInfo;
@@ -53,9 +54,13 @@ public class MouseManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && _hitInfo.collider != null)
         {
-            if (_hitInfo.collider.tag.Equals("Ground"))
+            if (_hitInfo.collider.CompareTag("Ground"))
             {
-                _onMouseClicked?.Invoke(_hitInfo.point); //如果ray碰到了地面则将点传到Unity的事件委托里
+                ONMouseClicked?.Invoke(_hitInfo.point); //如果ray碰到了地面则将点传到Unity的事件委托里
+            }
+            if (_hitInfo.collider.CompareTag("Enemy"))
+            {
+                ONEnemyClicked?.Invoke(_hitInfo.collider.gameObject); //将鼠标点击到的敌人对象传递到委托的方法里去
             }
         }
     }

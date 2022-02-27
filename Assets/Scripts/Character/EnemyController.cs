@@ -11,6 +11,7 @@ public class EnemyController : MonoBehaviour
     public EnemyStates enemyStates;
     
     private NavMeshAgent _navMeshAgent;
+    [Header("Base Settings")] public float sightRadius;
 
     private void Awake()
     {
@@ -24,6 +25,12 @@ public class EnemyController : MonoBehaviour
 
     private void SwitchStates()
     {
+        if (FoundPlayer())
+        {
+            enemyStates = EnemyStates.CHASE;
+            Debug.Log("切换到追击模式");
+        }
+        
         switch (enemyStates)
         {
             case EnemyStates.GUARD:
@@ -35,5 +42,20 @@ public class EnemyController : MonoBehaviour
             case EnemyStates.DEAD:
                 break;
         }
+    }
+
+    private bool FoundPlayer()
+    {
+        //返回sightRadius范围内所有的物体，物体需要有collider才能检测到
+        var overlapSphere = Physics.OverlapSphere(transform.position,sightRadius);
+        foreach (var o in overlapSphere)
+        {
+            if (o.CompareTag("Player"))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

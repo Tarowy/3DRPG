@@ -59,8 +59,8 @@ public class PlayerManger : MonoBehaviour
     {
         transform.LookAt(_attackTarget.transform); //使角色的方向指向敌人
 
-        //TODO:停止的距离会随着武器的长度而更改
-        while (Vector3.Distance(_attackTarget.gameObject.transform.position, transform.position) > 1)
+        while (Vector3.Distance(_attackTarget.gameObject.transform.position, transform.position) >
+               _characterStats.attackDataSo.attackRange) //停止的距离会随着武器的长短而改变
         {
             _navMeshAgent.destination = _attackTarget.transform.position;
             yield return null; //如果距离大于1就会一直靠近敌人

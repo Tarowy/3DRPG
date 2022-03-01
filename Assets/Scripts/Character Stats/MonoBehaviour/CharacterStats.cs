@@ -5,6 +5,9 @@ using UnityEngine;
 public class CharacterStats : MonoBehaviour
 {
     public CharacterData_SO characterDataSo; //从指定的脚本中读取数据
+    public AttackData_SO attackDataSo;
+    [HideInInspector]
+    public bool isCritical;
 
     #region Read From Data_SO
     public int MaxHealth

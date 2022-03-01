@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
     private GameObject _attackTarget;
     private Animator _animator;
+    private CharacterStats _characterStats;
 
     [Header("Base Settings")] 
     public float sightRadius; //检测sightRadius半径范围内的物体
@@ -22,6 +23,7 @@ public class EnemyController : MonoBehaviour
     private Vector3 _guardPos; //初始处于的位置
     public float lookAtTime; //到达目的地后的停留时间
     private float _remainLookAtTime;
+    private float _lastAttackTime;
 
     [Header("Patrol State")] 
     public float patrolRange;
@@ -36,6 +38,7 @@ public class EnemyController : MonoBehaviour
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
+        _characterStats = GetComponent<CharacterStats>();
         
         _guardPos = transform.position;
         _speed = _navMeshAgent.speed;
@@ -59,6 +62,7 @@ public class EnemyController : MonoBehaviour
     {
         SwitchStates();
         SwitchAnimation();
+        _lastAttackTime -= Time.deltaTime;
     }
 
     private void SwitchAnimation()
@@ -66,6 +70,7 @@ public class EnemyController : MonoBehaviour
         _animator.SetBool("Walk", _isWalk);
         _animator.SetBool("Chase", _isChase);
         _animator.SetBool("Follow", _isFollow);
+        _animator.SetBool("Critical", _characterStats.isCritical);
     }
 
     private void SwitchStates()
@@ -81,7 +86,7 @@ public class EnemyController : MonoBehaviour
                 break;
             case EnemyStates.PATROL:
                 _isChase = false;
-                _navMeshAgent.speed = _speed * 0.5f; //nav中使用乘法的开销比除法的开销要小
+                _navMeshAgent.speed = _speed * 0.5f; //不追击的时候速度比较慢（nav中使用乘法的开销比除法的开销要小）
 
                 if (Vector3.Distance(_wayPoint, transform.position) <= _navMeshAgent.stoppingDistance)
                 { 
@@ -99,8 +104,6 @@ public class EnemyController : MonoBehaviour
 
                 break; 
             case EnemyStates.CHASE:
-                //TODO:在攻击范围内则进行攻击
-                
                 _isWalk = false;
                 _isChase = true;
                 
@@ -108,6 +111,7 @@ public class EnemyController : MonoBehaviour
                 if (FoundPlayer())
                 {
                     _isFollow = true;
+                    _navMeshAgent.isStopped = false;
                     _navMeshAgent.destination = _attackTarget.transform.position;
                 }
                 else
@@ -124,9 +128,37 @@ public class EnemyController : MonoBehaviour
                     else 
                         enemyStates = EnemyStates.PATROL;
                 }
+                //玩家在攻击范围内则进行攻击
+                if (TargetInAttackRange() || TargetInSkillRange())
+                {
+                    _isFollow = false;
+                    _navMeshAgent.isStopped = true;
+                    if (_lastAttackTime<=0)
+                    {
+                        _lastAttackTime = _characterStats.attackDataSo.coolDown;
+                        _characterStats.isCritical = Random.value <= _characterStats.attackDataSo.criticalChance;
+                        Attack();
+                    }
+                }
+                
                 break; 
             case EnemyStates.DEAD:
                 break;
+        }
+    }
+
+    private void Attack()
+    {
+        transform.LookAt(_attackTarget.transform);
+        
+        if (TargetInAttackRange())
+        {
+            _animator.SetTrigger("Attack");
+        }
+
+        if (TargetInSkillRange())
+        {
+            _animator.SetTrigger("Attack");
         }
     }
 
@@ -145,6 +177,20 @@ public class EnemyController : MonoBehaviour
 
         _attackTarget = null;
         return false;
+    }
+
+    private bool TargetInAttackRange()
+    {
+        if (_attackTarget is null) return false;
+        return Vector3.Distance(_attackTarget.transform.position, transform.position) <=
+               _characterStats.attackDataSo.attackRange;
+    }
+
+    private bool TargetInSkillRange()
+    {
+        if (_attackTarget is null) return false;
+        return Vector3.Distance(_attackTarget.transform.position, transform.position) <=
+               _characterStats.attackDataSo.skillRange;
     }
 
     private void GetNewWayPoint()

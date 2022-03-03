@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class PlayerManger : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class PlayerManger : MonoBehaviour
         _attackTarget = target;
 
         _navMeshAgent.isStopped = false;
+        _characterStats.isCritical = Random.value < _characterStats.attackDataSo.criticalChance;
 
         StartCoroutine(AttackTarget());
     }
@@ -63,15 +65,23 @@ public class PlayerManger : MonoBehaviour
                _characterStats.attackDataSo.attackRange) //停止的距离会随着武器的长短而改变
         {
             _navMeshAgent.destination = _attackTarget.transform.position;
-            yield return null; //如果距离大于1就会一直靠近敌人
+            yield return null; //如果距离大于攻击距离就会一直靠近敌人
         }
 
-        _navMeshAgent.isStopped = true; //靠近敌人后停止以攻击
+        _navMeshAgent.isStopped = true; //靠近敌人后停止行动以攻击
 
-        while (_lastAttackTime < 0)
+        if (_lastAttackTime < 0)
         {
+            _animator.SetBool("Critical", _characterStats.isCritical);
             _animator.SetTrigger("Attack");
-            _lastAttackTime = 0.5f;
+            _lastAttackTime = _characterStats.attackDataSo.coolDown;
         }
     }
+    
+    //Animation Event
+    public void Hit()
+    {
+        _characterStats.TakeDamage(this._characterStats, _attackTarget.GetComponent<CharacterStats>());
+    }
+    
 }

@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Attack",menuName = "Character Stats/Attack")]
 public class AttackData_SO : ScriptableObject
 {
-    public float attackDamage;
     public float attackRange;
     public float skillRange;
     public float coolDown;

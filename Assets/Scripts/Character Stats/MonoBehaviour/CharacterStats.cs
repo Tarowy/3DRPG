@@ -34,4 +34,23 @@ public class CharacterStats : MonoBehaviour
         set => characterDataSo.currentDefence = value;
     }
     #endregion //可以折叠区域代码，指明里面的是什么内容
+
+    #region Character Combat
+
+    public void TakeDamage(CharacterStats attacker, CharacterStats defender)
+    {
+        int damage = Mathf.Max(attacker.CurrentDamage()-defender.CurrentDefence, 0); //防止对手的防御力大于攻击者的攻击力出现负值导致对手反而加血
+        defender.CurrentHealth = Mathf.Max(defender.CurrentHealth - damage, 0); //防止血量变为负数
+
+        //TODO:UI更新
+        //TODO:经验提升
+    }
+
+    private int CurrentDamage()
+    {
+        int coreDamage = Random.Range(attackDataSo.minDamage, attackDataSo.maxDamage);
+        return isCritical ? (int)(coreDamage * attackDataSo.criticalMultiply) : coreDamage;
+    }
+
+    #endregion
 }

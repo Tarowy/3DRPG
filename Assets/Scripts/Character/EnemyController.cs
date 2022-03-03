@@ -213,4 +213,12 @@ public class EnemyController : MonoBehaviour
         Gizmos.color=Color.red;
         Gizmos.DrawWireSphere(transform.position, sightRadius); //有Wire则画的是线条，没有则是实心的
     }
+    
+    //Animation Event
+    public void Hit()
+    {
+        if (_attackTarget is null) return; //由于敌人获取玩家的对象是自动的，所以相比于玩家的手动控制可能会丢失对象
+        
+        _characterStats.TakeDamage(this._characterStats, _attackTarget.GetComponent<CharacterStats>());
+    }
 }

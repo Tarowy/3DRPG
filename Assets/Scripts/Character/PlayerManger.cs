@@ -26,6 +26,8 @@ public class PlayerManger : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.RegisterPlayer(this._characterStats);
+        
         MouseManager.Instance.ONMouseClicked += MoveToTarget;
         MouseManager.Instance.ONEnemyClicked += MoveToAttackTarget;
     }

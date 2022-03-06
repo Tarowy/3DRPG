@@ -6,24 +6,13 @@ using UnityEngine.Events;
 
 // [System.Serializable] //该类不是继承于monoBehaviour所以需要序列化才能在Unity中显示出来
 // public class EventVector3 : UnityEvent<Vector3> { } //类似于委托，可以委托Unity的事件
-public class MouseManager : MonoBehaviour
+public class MouseManager : Singleton<MouseManager>
 {
-    public static MouseManager Instance; //单例模式
     public event Action<Vector3> ONMouseClicked; //鼠标点击的委托
     public event Action<GameObject> ONEnemyClicked; //鼠标点击敌人的委托 
     public Texture2D point, doorway, attack, target, arrow;
 
     private RaycastHit _hitInfo;
-
-    private void Awake()
-    {
-        if (Instance is null)
-        {
-            Destroy(Instance);
-        }
-
-        Instance = this;
-    }
 
     private void Update()
     {

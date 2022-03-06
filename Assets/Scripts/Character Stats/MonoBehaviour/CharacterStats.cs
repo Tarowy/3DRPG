@@ -42,6 +42,11 @@ public class CharacterStats : MonoBehaviour
         int damage = Mathf.Max(attacker.CurrentDamage()-defender.CurrentDefence, 0); //防止对手的防御力大于攻击者的攻击力出现负值导致对手反而加血
         defender.CurrentHealth = Mathf.Max(defender.CurrentHealth - damage, 0); //防止血量变为负数
 
+        if (attacker.isCritical)
+        {
+            Debug.Log("暴击");
+            defender.GetComponent<Animator>().SetTrigger("Hit");
+        }
         //TODO:UI更新
         //TODO:经验提升
     }

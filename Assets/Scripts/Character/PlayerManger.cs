@@ -14,6 +14,9 @@ public class PlayerManger : MonoBehaviour
     private GameObject _attackTarget;
     private float _lastAttackTime;
 
+    //动画变量
+    private bool _isDeath;
+
     private void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
@@ -29,6 +32,7 @@ public class PlayerManger : MonoBehaviour
 
     private void Update()
     {
+        _isDeath = _characterStats.CurrentHealth == 0;
         SwitchAnimation();
         _lastAttackTime -= Time.deltaTime;
     }
@@ -36,6 +40,7 @@ public class PlayerManger : MonoBehaviour
     private void SwitchAnimation()
     {
         _animator.SetFloat("speed",_navMeshAgent.velocity.sqrMagnitude); //将速度矢量转换为浮点数传入speed
+        _animator.SetBool("Death", _isDeath);
         // Debug.Log("speed:" + _navMeshAgent.velocity.sqrMagnitude);
     }
 

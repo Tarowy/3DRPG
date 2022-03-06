@@ -15,13 +15,16 @@ public class EnemyController : MonoBehaviour
     private GameObject _attackTarget;
     private Animator _animator;
     private CharacterStats _characterStats;
+    private Collider _collider;
 
     [Header("Base Settings")] 
     public float sightRadius; //检测sightRadius半径范围内的物体
-    private bool _isGuard; //此敌人是巡逻种类的还是站桩种类的
+    public bool isGuard; //此敌人是巡逻种类的还是站桩种类的
+    public float lookAtTime; //到达目的地后的停留时间
+    
     private float _speed; //初始的速度
     private Vector3 _guardPos; //初始处于的位置
-    public float lookAtTime; //到达目的地后的停留时间
+    private Quaternion _guardRotation; //初始的旋转角度
     private float _remainLookAtTime;
     private float _lastAttackTime;
 
@@ -33,21 +36,24 @@ public class EnemyController : MonoBehaviour
     private bool _isChase;
     private bool _isWalk;
     private bool _isFollow;
+    private bool _isDeath;
 
     private void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
         _characterStats = GetComponent<CharacterStats>();
+        _collider = GetComponent<Collider>();
         
         _guardPos = transform.position;
         _speed = _navMeshAgent.speed;
         _remainLookAtTime = lookAtTime;
+        _guardRotation = transform.rotation;
     }
 
     private void Start()
     {
-        if (_isGuard)
+        if (isGuard)
         {
             enemyStates = EnemyStates.GUARD;
         }
@@ -60,6 +66,7 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
+        _isDeath = _characterStats.CurrentHealth == 0;
         SwitchStates();
         SwitchAnimation();
         _lastAttackTime -= Time.deltaTime;
@@ -71,11 +78,16 @@ public class EnemyController : MonoBehaviour
         _animator.SetBool("Chase", _isChase);
         _animator.SetBool("Follow", _isFollow);
         _animator.SetBool("Critical", _characterStats.isCritical);
+        _animator.SetBool("Death", _isDeath);
     }
 
     private void SwitchStates()
     {
-        if (FoundPlayer())
+        if (_isDeath)
+        {
+            enemyStates = EnemyStates.DEAD;
+        }
+        else if (FoundPlayer())
         {
             enemyStates = EnemyStates.CHASE;
         }
@@ -83,6 +95,19 @@ public class EnemyController : MonoBehaviour
         switch (enemyStates)
         {
             case EnemyStates.GUARD:
+                if (transform.position != _guardPos)
+                {
+                    _isWalk = true;
+                    _navMeshAgent.isStopped = false;
+                    _navMeshAgent.destination = _guardPos;
+
+                    if (Vector3.SqrMagnitude(_guardPos - transform.position) <= _navMeshAgent.stoppingDistance)
+                    {
+                        _isWalk = false;
+                        //利用线性插值缓慢转回到初始角度
+                        transform.rotation = Quaternion.Lerp(transform.rotation, _guardRotation, 0.01f);
+                    }
+                }
                 break;
             case EnemyStates.PATROL:
                 _isChase = false;
@@ -123,11 +148,12 @@ public class EnemyController : MonoBehaviour
                         _navMeshAgent.destination = transform.position; //拉脱之后仍会有一段余留速度，使其立马停止在原位
                         _remainLookAtTime -= Time.deltaTime;  
                     }
-                    else if (_isGuard) 
+                    else if (isGuard) 
                         enemyStates = EnemyStates.GUARD;
                     else 
                         enemyStates = EnemyStates.PATROL;
                 }
+                
                 //玩家在攻击范围内则进行攻击
                 if (TargetInAttackRange() || TargetInSkillRange())
                 {
@@ -143,6 +169,9 @@ public class EnemyController : MonoBehaviour
                 
                 break; 
             case EnemyStates.DEAD:
+                _collider.enabled = false;
+                _navMeshAgent.enabled = false;
+                Destroy(gameObject, 2f);
                 break;
         }
     }
@@ -183,7 +212,7 @@ public class EnemyController : MonoBehaviour
     {
         if (_attackTarget is null) return false;
         return Vector3.Distance(_attackTarget.transform.position, transform.position) <=
-               _characterStats.attackDataSo.attackRange;
+               _characterStats.attackDataSo.attackRange; //如果agent的stopDistance大于attackRange就会导致无法攻击
     }
 
     private bool TargetInSkillRange()
@@ -217,8 +246,9 @@ public class EnemyController : MonoBehaviour
     //Animation Event
     public void Hit()
     {
+        Debug.Log(gameObject.name+"攻击");
         if (_attackTarget is null) return; //由于敌人获取玩家的对象是自动的，所以相比于玩家的手动控制可能会丢失对象
         
-        _characterStats.TakeDamage(this._characterStats, _attackTarget.GetComponent<CharacterStats>());
+        _characterStats.TakeDamage(_characterStats, _attackTarget.GetComponent<CharacterStats>());
     }
 }

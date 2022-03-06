@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public enum EnemyStates{ GUARD, PATROL, CHASE, DEAD}
 [RequireComponent(typeof(NavMeshAgent))] //如果对象没有该组件会自动添加
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour,IEndGameObserver
 {
     public EnemyStates enemyStates;
     
@@ -49,6 +49,16 @@ public class EnemyController : MonoBehaviour
         _speed = _navMeshAgent.speed;
         _remainLookAtTime = lookAtTime;
         _guardRotation = transform.rotation;
+    }
+    
+    private void OnEnable()
+    {
+        GameManager.Instance.AddObserver(this);
+    }
+
+    private void OnDisable() //OnDisable是在销毁之后才执行的，OnDestroy是在销毁时执行的
+    {
+        GameManager.Instance.RemoveObserver(this);
     }
 
     private void Start()
@@ -100,7 +110,9 @@ public class EnemyController : MonoBehaviour
                     _isWalk = true;
                     _navMeshAgent.isStopped = false;
                     _navMeshAgent.destination = _guardPos;
-
+                    
+                    //SqrMagnitude的开销比distance小
+                    Debug.Log("SqrMagnitude:"+Vector3.SqrMagnitude(_guardPos - transform.position));
                     if (Vector3.SqrMagnitude(_guardPos - transform.position) <= _navMeshAgent.stoppingDistance)
                     {
                         _isWalk = false;
@@ -250,5 +262,16 @@ public class EnemyController : MonoBehaviour
         if (_attackTarget is null) return; //由于敌人获取玩家的对象是自动的，所以相比于玩家的手动控制可能会丢失对象
         
         _characterStats.TakeDamage(_characterStats, _attackTarget.GetComponent<CharacterStats>());
+    }
+
+    public void EndNotify()
+    {
+        //胜利动画
+        _animator.SetBool("Win", true);
+        //停止所有移动
+        //停止Agent
+        _isFollow = false;
+        _isChase = false;
+        _attackTarget = null;
     }
 }

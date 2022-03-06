@@ -35,6 +35,9 @@ public class PlayerManger : MonoBehaviour
     private void Update()
     {
         _isDeath = _characterStats.CurrentHealth == 0;
+        if (_isDeath) //角色死亡之后就通知所有继承IEndGameNotify的对象
+            GameManager.Instance.NotifyObservers();
+        
         SwitchAnimation();
         _lastAttackTime -= Time.deltaTime;
     }

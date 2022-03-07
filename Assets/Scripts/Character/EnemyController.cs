@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public enum EnemyStates{ GUARD, PATROL, CHASE, DEAD}
 [RequireComponent(typeof(NavMeshAgent))] //如果对象没有该组件会自动添加
+[RequireComponent(typeof(CharacterStats))]
 public class EnemyController : MonoBehaviour,IEndGameObserver
 {
     public EnemyStates enemyStates;
@@ -51,13 +52,9 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         _guardRotation = transform.rotation;
     }
     
-    private void OnEnable()
-    {
-        GameManager.Instance.AddObserver(this);
-    }
-
     private void OnDisable() //OnDisable是在销毁之后才执行的，OnDestroy是在销毁时执行的
     {
+        if (!GameManager.IsInitialized) return; //如果GameManager还未初始化，执行下面的会导致报错
         GameManager.Instance.RemoveObserver(this);
     }
 
@@ -72,13 +69,14 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             enemyStates = EnemyStates.PATROL;
             GetNewWayPoint();
         }
+        GameManager.Instance.AddObserver(this);
     }
 
     private void Update()
     {
         _isDeath = _characterStats.CurrentHealth == 0;
         SwitchStates();
-        SwitchAnimation();
+        SwitchAnimation(); 
         _lastAttackTime -= Time.deltaTime;
     }
 
@@ -124,6 +122,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             case EnemyStates.PATROL:
                 _isChase = false;
                 _navMeshAgent.speed = _speed * 0.5f; //不追击的时候速度比较慢（nav中使用乘法的开销比除法的开销要小）
+                // _navMeshAgent.isStopped = false;
 
                 if (Vector3.Distance(_wayPoint, transform.position) <= _navMeshAgent.stoppingDistance)
                 { 
@@ -273,5 +272,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         _isFollow = false;
         _isChase = false;
         _attackTarget = null;
+
+        _navMeshAgent.isStopped = true;
     }
 }

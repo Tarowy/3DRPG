@@ -1,13 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CharacterStats : MonoBehaviour
 {
+    public CharacterData_SO tempCharacterDataSo; //当创建敌人的时候就会从中复制一份数据，防止敌人间的数据共用
+    
     public CharacterData_SO characterDataSo; //从指定的脚本中读取数据
     public AttackData_SO attackDataSo;
     [HideInInspector]
     public bool isCritical;
+
+    private void Awake()
+    {
+        characterDataSo = (CharacterData_SO) Instantiate(tempCharacterDataSo);
+    }
 
     #region Read From Data_SO
     public int MaxHealth

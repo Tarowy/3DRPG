@@ -52,13 +52,15 @@ public class PlayerManger : MonoBehaviour
     private void MoveToTarget(Vector3 target)
     {
         StopAllCoroutines(); //为了可以在攻击的时候随时打断攻击动画
+        if (_isDeath) return;
+        
         _navMeshAgent.isStopped = false; //攻击敌人后agent会变为停止状态而无法行走,所以要置为false
         _navMeshAgent.destination = target;
     }
 
     private void MoveToAttackTarget(GameObject target)
     {
-        if (target==null) { return; }
+        if (target==null || _isDeath) return;
         _attackTarget = target;
 
         _navMeshAgent.isStopped = false;

@@ -13,7 +13,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     public EnemyStates enemyStates;
     
     private NavMeshAgent _navMeshAgent;
-    private GameObject _attackTarget;
+    protected GameObject attackTarget;
     private Animator _animator;
     private CharacterStats _characterStats;
     private Collider _collider;
@@ -148,7 +148,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 {
                     _isFollow = true;
                     _navMeshAgent.isStopped = false;
-                    _navMeshAgent.destination = _attackTarget.transform.position;
+                    _navMeshAgent.destination = attackTarget.transform.position;
                 }
                 else
                 {
@@ -166,7 +166,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 }
                 
                 //玩家在攻击范围内则进行攻击
-                if (TargetInAttackRange() || TargetInSkillRange())
+                if (TargetInSkillRange() || TargetInAttackRange()) //如果在技能范围内则不攻击，一直释放技能
                 {
                     _isFollow = false;
                     _navMeshAgent.isStopped = true;
@@ -181,7 +181,9 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 break; 
             case EnemyStates.DEAD:
                 _collider.enabled = false;
-                _navMeshAgent.enabled = false;
+                // _navMeshAgent.enabled = false;
+                //在挂载了StopAgent的动画执行StopAgent中的update的时候，该对象突然死亡会导致StopAgent丢失Agent的对象
+                _navMeshAgent.radius = 0;
                 Destroy(gameObject, 2f);
                 break;
         }
@@ -189,14 +191,12 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     private void Attack()
     {
-        transform.LookAt(_attackTarget.transform);
-        
-        if (TargetInAttackRange())
-        {
-            _animator.SetTrigger("Attack");
-        }
+        transform.LookAt(attackTarget.transform);
 
         if (TargetInSkillRange())
+        {
+            _animator.SetTrigger("Skill");
+        }else if (TargetInAttackRange())
         {
             _animator.SetTrigger("Attack");
         }
@@ -210,26 +210,26 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         {
             if (o.CompareTag("Player"))
             {
-                _attackTarget = o.gameObject;
+                attackTarget = o.gameObject;
                 return true;
             }
         }
 
-        _attackTarget = null;
+        attackTarget = null;
         return false;
     }
 
     private bool TargetInAttackRange()
     {
-        if (_attackTarget is null) return false;
-        return Vector3.Distance(_attackTarget.transform.position, transform.position) <=
+        if (attackTarget is null) return false;
+        return Vector3.Distance(attackTarget.transform.position, transform.position) <=
                _characterStats.attackDataSo.attackRange; //如果agent的stopDistance大于attackRange就会导致无法攻击
     }
 
     private bool TargetInSkillRange()
     {
-        if (_attackTarget is null) return false;
-        return Vector3.Distance(_attackTarget.transform.position, transform.position) <=
+        if (attackTarget is null) return false;
+        return Vector3.Distance(attackTarget.transform.position, transform.position) <=
                _characterStats.attackDataSo.skillRange;
     }
 
@@ -258,9 +258,9 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     public void Hit()
     {
         Debug.Log(gameObject.name+"攻击");
-        if (_attackTarget is null) return; //由于敌人获取玩家的对象是自动的，所以相比于玩家的手动控制可能会丢失对象
+        if (attackTarget is null) return; //由于敌人获取玩家的对象是自动的，所以相比于玩家的手动控制可能会丢失对象
         
-        _characterStats.TakeDamage(_characterStats, _attackTarget.GetComponent<CharacterStats>());
+        _characterStats.TakeDamage(_characterStats, attackTarget.GetComponent<CharacterStats>());
     }
 
     public void EndNotify()
@@ -271,7 +271,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         //停止Agent
         _isFollow = false;
         _isChase = false;
-        _attackTarget = null;
+        attackTarget = null;
 
         _navMeshAgent.isStopped = true;
     }

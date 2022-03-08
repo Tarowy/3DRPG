@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ccdbddce7cbc1c44aa1b24669d0353d, type: 3}
   m_Name: turtle
   m_EditorClassIdentifier: 
-  attackRange: 0.8
+  attackRange: 1
   skillRange: 0
   coolDown: 1
   minDamage: 4

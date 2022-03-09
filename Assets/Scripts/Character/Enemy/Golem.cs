@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Grunt : EnemyController
+public class Golem : EnemyController
 {
     [Header("Skill")] 
     public float kickForce;
@@ -12,7 +12,6 @@ public class Grunt : EnemyController
     {
         if (attackTarget != null && transform.IsFacingTarget(attackTarget.transform))
         {
-            Debug.Log("推");
             transform.LookAt(attackTarget.transform);
             
             Vector3 direction = attackTarget.transform.position - transform.position;

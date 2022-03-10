@@ -98,7 +98,24 @@ public class PlayerManger : MonoBehaviour
     //Animation Event
     public void Hit()
     {
-        _characterStats.TakeDamage(this._characterStats, _attackTarget.GetComponent<CharacterStats>());
+        if (_attackTarget == null)
+        {
+            return;
+        }
+        if (_attackTarget.CompareTag("Attackable"))
+        {
+            if (_attackTarget.GetComponent<Rock>() &&
+                _attackTarget.GetComponent<Rock>().rockStates == Rock.RockStates.HitNothing)
+            {
+                _attackTarget.GetComponent<Rock>().rockStates = Rock.RockStates.HitEnemy;
+                _attackTarget.GetComponent<Rigidbody>().velocity = Vector3.one; //刚开始的时候石头速度很小，这时会被其中的FixUPDATE重新置会HitNothing
+                _attackTarget.GetComponent<Rigidbody>().AddForce(transform.forward * 20f, ForceMode.Impulse);
+            }
+        }
+        else
+        {
+            _characterStats.TakeDamage(this._characterStats, _attackTarget.GetComponent<CharacterStats>());
+        }
     }
     
 }

@@ -51,6 +51,10 @@ public class MouseManager : Singleton<MouseManager>
             {
                 ONEnemyClicked?.Invoke(_hitInfo.collider.gameObject); //将鼠标点击到的敌人对象传递到委托的方法里去
             }
+            if (_hitInfo.collider.CompareTag("Attackable"))
+            {
+                ONEnemyClicked?.Invoke(_hitInfo.collider.gameObject);
+            }
         }
     }
 }

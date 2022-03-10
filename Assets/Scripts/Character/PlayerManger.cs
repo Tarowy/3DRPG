@@ -13,6 +13,7 @@ public class PlayerManger : MonoBehaviour
 
     private GameObject _attackTarget;
     private float _lastAttackTime;
+    private float _stopDistancce; //初始设定好的停止距离
 
     //动画变量
     private bool _isDeath;
@@ -22,6 +23,8 @@ public class PlayerManger : MonoBehaviour
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
         _characterStats = GetComponent<CharacterStats>();
+
+        _stopDistancce = _navMeshAgent.stoppingDistance;
     }
 
     private void Start()
@@ -53,7 +56,8 @@ public class PlayerManger : MonoBehaviour
     {
         StopAllCoroutines(); //为了可以在攻击的时候随时打断攻击动画
         if (_isDeath) return;
-        
+
+        _navMeshAgent.stoppingDistance = _stopDistancce;
         _navMeshAgent.isStopped = false; //攻击敌人后agent会变为停止状态而无法行走,所以要置为false
         _navMeshAgent.destination = target;
     }
@@ -62,6 +66,7 @@ public class PlayerManger : MonoBehaviour
     {
         if (target==null || _isDeath) return;
         _attackTarget = target;
+        _navMeshAgent.stoppingDistance = _characterStats.attackDataSo.attackRange; //将停止距离替换为攻击距离，防止敌人的模型过大导致一直向前走
 
         _navMeshAgent.isStopped = false;
         _characterStats.isCritical = Random.value < _characterStats.attackDataSo.criticalChance;

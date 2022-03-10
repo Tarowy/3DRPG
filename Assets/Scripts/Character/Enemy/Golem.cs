@@ -7,6 +7,8 @@ public class Golem : EnemyController
 {
     [Header("Skill")] 
     public float kickForce;
+    public GameObject rockPrefab;
+    public Transform hand;
 
     public void KickOff() //动画事件，将玩家推开
     {
@@ -19,6 +21,15 @@ public class Golem : EnemyController
             
             attackTarget.GetComponent<NavMeshAgent>().velocity = direction * kickForce;
             attackTarget.GetComponent<Animator>().SetTrigger("Dizzy");
+        }
+    }
+
+    public void ThrowRock()
+    {
+        if (attackTarget != null)
+        {
+            var rock = Instantiate(rockPrefab, hand.position, Quaternion.identity);
+            rock.GetComponent<Rock>().target = attackTarget;
         }
     }
 }

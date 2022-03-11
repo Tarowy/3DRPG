@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class CharacterStats : MonoBehaviour
 {
+    public event Action<int, int> updateHealthBarOnAttack; 
     public CharacterData_SO tempCharacterDataSo; //当创建敌人的时候就会从中复制一份数据，防止敌人间的数据共用
     
     public CharacterData_SO characterDataSo; //从指定的脚本中读取数据
@@ -56,7 +57,8 @@ public class CharacterStats : MonoBehaviour
             Debug.Log("暴击");
             defender.GetComponent<Animator>().SetTrigger("Hit");
         }
-        //TODO:UI更新
+
+        defender.updateHealthBarOnAttack?.Invoke(CurrentHealth, MaxHealth);
         //TODO:经验提升
     }
 
@@ -64,6 +66,8 @@ public class CharacterStats : MonoBehaviour
     {
         int currentDamage = Mathf.Max(damage - defender.CurrentDefence, 0);
         defender.CurrentHealth = Mathf.Max(defender.CurrentHealth - currentDamage, 0);
+        
+        defender.updateHealthBarOnAttack?.Invoke(CurrentHealth, MaxHealth);
     }
 
     private int CurrentDamage()

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Enemy_Grunt
   m_EditorClassIdentifier: 
   maxHealth: 40
-  currentHealth: 3
+  currentHealth: 40
   baseDefence: 3
   currentDefence: 3

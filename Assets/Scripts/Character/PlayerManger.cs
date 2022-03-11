@@ -77,7 +77,7 @@ public class PlayerManger : MonoBehaviour
     private IEnumerator AttackTarget()
     {
         transform.LookAt(_attackTarget.transform); //使角色的方向指向敌人
-
+        
         while (Vector3.Distance(_attackTarget.gameObject.transform.position, transform.position) >
                _characterStats.attackDataSo.attackRange) //停止的距离会随着武器的长短而改变
         {
@@ -114,7 +114,7 @@ public class PlayerManger : MonoBehaviour
         }
         else
         {
-            _characterStats.TakeDamage(this._characterStats, _attackTarget.GetComponent<CharacterStats>());
+            _attackTarget.GetComponent<CharacterStats>().TakeDamage(this._characterStats, _attackTarget.GetComponent<CharacterStats>());
         }
     }
     

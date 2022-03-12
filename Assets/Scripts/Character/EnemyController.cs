@@ -257,16 +257,16 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     //Animation Event
     public void Hit()
     {
-        Debug.Log(gameObject.name+"攻击");
+        // Debug.Log(gameObject.name+"攻击");
         if (attackTarget is null) return; //由于敌人获取玩家的对象是自动的，所以相比于玩家的手动控制可能会丢失对象
         
         if (transform.IsFacingTarget(attackTarget.transform)) //只有玩家在敌人的视野内才会受到攻击伤害
         {
-            Debug.Log("打着了");
+            // Debug.Log("打着了");
             _characterStats.TakeDamage(_characterStats, attackTarget.GetComponent<CharacterStats>());
             return;
         }
-        Debug.Log("没打着");
+        // Debug.Log("没打着");
     }
 
     public void EndNotify()

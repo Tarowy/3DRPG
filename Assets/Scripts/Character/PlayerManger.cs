@@ -81,8 +81,11 @@ public class PlayerManger : MonoBehaviour
         while (Vector3.Distance(_attackTarget.gameObject.transform.position, transform.position) >
                _characterStats.attackDataSo.attackRange) //停止的距离会随着武器的长短而改变
         {
+            Debug.Log("1："+"--"+Time.time);
             _navMeshAgent.destination = _attackTarget.transform.position;
             yield return null; //如果距离大于攻击距离就会一直靠近敌人
+            Debug.Log("1："+"--"+Time.time);
+            _navMeshAgent.destination = _attackTarget.transform.position;
         }
 
         _navMeshAgent.isStopped = true; //靠近敌人后停止行动以攻击

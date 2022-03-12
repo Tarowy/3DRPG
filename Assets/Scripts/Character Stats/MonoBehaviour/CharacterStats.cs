@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class CharacterStats : MonoBehaviour
 {
-    public event Action<int, int> updateHealthBarOnAttack; 
+    public event Action<int, int> UpdateHealthBarOnAttack; 
     public CharacterData_SO tempCharacterDataSo; //当创建敌人的时候就会从中复制一份数据，防止敌人间的数据共用
     
     public CharacterData_SO characterDataSo; //从指定的脚本中读取数据
@@ -58,8 +58,12 @@ public class CharacterStats : MonoBehaviour
             defender.GetComponent<Animator>().SetTrigger("Hit");
         }
 
-        defender.updateHealthBarOnAttack?.Invoke(CurrentHealth, MaxHealth);
-        //TODO:经验提升
+        defender.UpdateHealthBarOnAttack?.Invoke(CurrentHealth, MaxHealth);
+
+        if (CurrentHealth <= 0)
+        {
+            attacker.characterDataSo.UpdateExp(characterDataSo.killPoint);
+        }
     }
 
     public void TakeDamage(int damage,CharacterStats defender)
@@ -67,7 +71,7 @@ public class CharacterStats : MonoBehaviour
         int currentDamage = Mathf.Max(damage - defender.CurrentDefence, 0);
         defender.CurrentHealth = Mathf.Max(defender.CurrentHealth - currentDamage, 0);
         
-        defender.updateHealthBarOnAttack?.Invoke(CurrentHealth, MaxHealth);
+        defender.UpdateHealthBarOnAttack?.Invoke(CurrentHealth, MaxHealth);
     }
 
     private int CurrentDamage()

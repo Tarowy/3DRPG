@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Green Portal
+  m_Shader: {fileID: -6465566751694194690, guid: a0ccb9a73bcd0fe41b219bc9a6e9ee0d, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Texture2D_2aa9dbb7d0d3456d8deacf3dca155745:
+        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_3bc22a5f0ba643c3ad6fee9300815623: 20
+    - Vector1_639cd66b96a24b2db94033b8c5fd06cb: 6.97
+    - Vector1_8f11e8747cce401fb12fc158d0e628de: 4.25
+    - Vector1_a8be6a1c8ad2490bbd3c9104edb96c92: 0.2
+    m_Colors:
+    - Color_976bfcbd03004acdb36d9dcebf5e0f62: {r: 0.63476026, g: 0.92549014, b: 0.66867876, a: 0}
+  m_BuildTextureStacks: []

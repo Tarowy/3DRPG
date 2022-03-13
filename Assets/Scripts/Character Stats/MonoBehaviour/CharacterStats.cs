@@ -72,6 +72,12 @@ public class CharacterStats : MonoBehaviour
         defender.CurrentHealth = Mathf.Max(defender.CurrentHealth - currentDamage, 0);
         
         defender.UpdateHealthBarOnAttack?.Invoke(CurrentHealth, MaxHealth);
+
+        //直接击杀敌人也可以
+        if (CurrentHealth <= 0)
+        {
+            GameManager.Instance.playerStats.characterDataSo.UpdateExp(characterDataSo.killPoint);
+        }
     }
 
     private int CurrentDamage()

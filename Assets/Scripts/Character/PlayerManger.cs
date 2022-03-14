@@ -27,16 +27,30 @@ public class PlayerManger : MonoBehaviour
         _stopDistance = _navMeshAgent.stoppingDistance;
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        GameManager.Instance.RegisterPlayer(this._characterStats);
-        
         MouseManager.Instance.ONMouseClicked += MoveToTarget;
         MouseManager.Instance.ONEnemyClicked += MoveToAttackTarget;
     }
 
+    private void OnDisable() //下一个场景会生成新的该脚本，该脚本会销毁导致该脚本的事件也无法调用
+    {
+        MouseManager.Instance.ONMouseClicked -= MoveToTarget;
+        MouseManager.Instance.ONEnemyClicked -= MoveToAttackTarget;
+    }
+
+    private void Start()
+    {
+        // Debug.Log("注册--" + Time.time);
+        GameManager.Instance.RegisterPlayer(this._characterStats);
+
+        // Debug.Log("player:" + GameManager.Instance.playerStats+ Time.time);
+    }
+
     private void Update()
     {
+        // Debug.Log(_characterStats + "player" + "--" + Time.time);
+        
         _isDeath = _characterStats.CurrentHealth == 0;
         if (_isDeath) //角色死亡之后就通知所有继承IEndGameNotify的对象
             GameManager.Instance.NotifyObservers();

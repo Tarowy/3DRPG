@@ -14,6 +14,12 @@ public class MouseManager : Singleton<MouseManager>
 
     private RaycastHit _hitInfo;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(this);
+    }
+    
     private void Update()
     {
         SetCursorTexture();
@@ -46,6 +52,7 @@ public class MouseManager : Singleton<MouseManager>
     {
         if (Input.GetMouseButtonDown(0) && _hitInfo.collider != null)
         {
+            // Debug.Log(GameManager.Instance.playerStats + "移动");
             if (_hitInfo.collider.CompareTag("Ground"))
             {
                 ONMouseClicked?.Invoke(_hitInfo.point); //如果ray碰到了地面则将点传到Unity的事件委托里

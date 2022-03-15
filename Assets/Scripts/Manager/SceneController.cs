@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class SceneController : Singleton<SceneController>
 {
     public GameObject player;
-    private int _count;
     
     protected override void Awake()
     {
@@ -45,16 +44,14 @@ public class SceneController : Singleton<SceneController>
     /// <returns></returns>
     private IEnumerator Transition(string sceneName, TransitionDestination.DestinationTag destinationTag)
     {
-        //TODO:保存玩家数据
         if (!sceneName.Equals(SceneManager.GetActiveScene().name))
         {
-            Debug.Log("xxx");
+            SaveManager.Instance.SavaData();
             yield return SceneManager.LoadSceneAsync(sceneName); //当另一个场景异步加载完毕，当前场景的一切都会消失
             
             var destTransform = GetTransitionDestination(destinationTag).transform;
-            var instantiate = Instantiate(player, destTransform.position, destTransform.rotation);
-            instantiate.name = player + "-" + _count.ToString();
-            _count++;
+            yield return Instantiate(player, destTransform.position, destTransform.rotation); //等玩家生成完毕才会执行下面的代码
+            SaveManager.Instance.LoadData();
             yield break;
         }
         else

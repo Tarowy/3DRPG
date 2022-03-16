@@ -14,6 +14,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T> //单例模式�
         if (_instance!=null)
         {
             Destroy(gameObject);
+            return;
         }
 
         _instance = (T)this;

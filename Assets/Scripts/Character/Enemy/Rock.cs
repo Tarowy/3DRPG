@@ -41,7 +41,7 @@ public class Rock : MonoBehaviour
     public void FlyToTarget()
     {
         if (target == null) //如果再投石动画发生的过程中玩家摆脱了敌人，会导致target为空值从而石头会直接落下
-            target = GameObject.Find("Player");
+            target = FindObjectOfType<PlayerManger>().gameObject;
         
         _direction = (target.transform.position - transform.position + Vector3.up).normalized;
         _rigidbody.AddForce(_direction * force, ForceMode.Impulse);

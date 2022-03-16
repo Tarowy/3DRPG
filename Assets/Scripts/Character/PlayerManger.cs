@@ -31,6 +31,7 @@ public class PlayerManger : MonoBehaviour
     {
         MouseManager.Instance.ONMouseClicked += MoveToTarget;
         MouseManager.Instance.ONEnemyClicked += MoveToAttackTarget;
+        GameManager.Instance.RegisterPlayer(this._characterStats);
     }
 
     private void OnDisable() //下一个场景会生成新的该脚本，该脚本会销毁导致该脚本的事件也无法调用
@@ -41,10 +42,7 @@ public class PlayerManger : MonoBehaviour
 
     private void Start()
     {
-        // Debug.Log("注册--" + Time.time);
-        GameManager.Instance.RegisterPlayer(this._characterStats);
-
-        // Debug.Log("player:" + GameManager.Instance.playerStats+ Time.time);
+        SaveManager.Instance.LoadData();
     }
 
     private void Update()

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : Singleton<SceneController>
 {
-    public GameObject player;
+    public GameObject playerPrefab;
     
     protected override void Awake()
     {
@@ -27,7 +27,7 @@ public class SceneController : Singleton<SceneController>
             case TransitionPoint.TransitionType.SameScene:
                 //SceneManager.GetActiveScene()可以获取当前激活场景的信息
                 StartCoroutine(Transition(SceneManager.GetActiveScene().name, transitionPoint.destinationTag));
-                player.GetComponent<NavMeshAgent>().isStopped = true;
+                playerPrefab.GetComponent<NavMeshAgent>().isStopped = true;
                 break;
             
             case TransitionPoint.TransitionType.DifferentScene:
@@ -50,15 +50,14 @@ public class SceneController : Singleton<SceneController>
             yield return SceneManager.LoadSceneAsync(sceneName); //当另一个场景异步加载完毕，当前场景的一切都会消失
             
             var destTransform = GetTransitionDestination(destinationTag).transform;
-            yield return Instantiate(player, destTransform.position, destTransform.rotation); //等玩家生成完毕才会执行下面的代码
+            yield return Instantiate(playerPrefab, destTransform.position, destTransform.rotation); //等玩家生成完毕才会执行下面的代码
             SaveManager.Instance.LoadData();
-            yield break;
         }
         else
         {
-            player = GameManager.Instance.playerStats.gameObject;
+            playerPrefab = GameManager.Instance.playerStats.gameObject;
             var destination = GetTransitionDestination(destinationTag).transform;
-            player.transform.SetPositionAndRotation(destination.position,destination.rotation);
+            playerPrefab.transform.SetPositionAndRotation(destination.position,destination.rotation);
             yield return null;
         }
     }
@@ -69,7 +68,7 @@ public class SceneController : Singleton<SceneController>
     /// <param name="destinationTag"></param>
     private TransitionDestination GetTransitionDestination(TransitionDestination.DestinationTag destinationTag)
     {
-        var entrance = GameObject.FindObjectsOfType<TransitionDestination>();
+        var entrance = FindObjectsOfType<TransitionDestination>();
 
         foreach (var transitionPoint in entrance)
         {
@@ -80,5 +79,44 @@ public class SceneController : Singleton<SceneController>
         }
 
         return null;
+    }
+
+    public void TransitionToLoadLevel()
+    {
+        StartCoroutine(LoadLevel(SaveManager.Instance.SceneName));
+    }
+
+    public void TransitionToFirstLevel()
+    {
+        StartCoroutine(LoadLevel("First"));
+    }
+
+    /// <summary>
+    /// 在菜单中开始新游戏时加载场景使用
+    /// </summary>
+    /// <param name="sceneName"></param>
+    /// <returns></returns>
+    private IEnumerator LoadLevel(string sceneName)
+    {
+        if (!sceneName.Equals(""))
+        {
+            yield return SceneManager.LoadSceneAsync(sceneName);
+            
+            var entrance = GameManager.Instance.GetEntrance();
+            yield return Instantiate(playerPrefab, entrance.position, entrance.rotation);
+            
+            SaveManager.Instance.SavaData();
+        }
+    }
+
+    public void TransitionToMainMenu()
+    {
+        StartCoroutine(LoadMain());
+    }
+
+    private IEnumerator LoadMain()
+    {
+        SaveManager.Instance.SavaData();
+        yield return SceneManager.LoadSceneAsync("Main");
     }
 }

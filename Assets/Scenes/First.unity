@@ -88875,9 +88875,33 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7333612449988305802, guid: 9112cdee2c11838438fc9cf2543e4dbc, type: 3}
+      propertyPath: destinationTag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333612449988305803, guid: 9112cdee2c11838438fc9cf2543e4dbc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.051
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333612449988305803, guid: 9112cdee2c11838438fc9cf2543e4dbc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.218
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333612449988305803, guid: 9112cdee2c11838438fc9cf2543e4dbc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333612450050463907, guid: 9112cdee2c11838438fc9cf2543e4dbc, type: 3}
+      propertyPath: sceneName
+      value: Main
+      objectReference: {fileID: 0}
     - target: {fileID: 7333612450050463907, guid: 9112cdee2c11838438fc9cf2543e4dbc, type: 3}
       propertyPath: destinationTag
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333612450050463907, guid: 9112cdee2c11838438fc9cf2543e4dbc, type: 3}
+      propertyPath: transitionType
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7333612450050463928, guid: 9112cdee2c11838438fc9cf2543e4dbc, type: 3}
       propertyPath: m_Name
@@ -88885,7 +88909,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7333612450050463928, guid: 9112cdee2c11838438fc9cf2543e4dbc, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7333612450050463932, guid: 9112cdee2c11838438fc9cf2543e4dbc, type: 3}
       propertyPath: m_RootOrder

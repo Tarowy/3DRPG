@@ -23,11 +23,6 @@ public class GameManager : Singleton<GameManager>
         DontDestroyOnLoad(this);
     }
 
-    private void Update()
-    {
-        // Debug.Log(playerStats + "--" + Time.time);
-    }
-
     public void RegisterPlayer(CharacterStats player)
     {
         // Debug.Log("接收注册--" + Time.time);
@@ -60,5 +55,22 @@ public class GameManager : Singleton<GameManager>
         {
             vObserver.EndNotify();
         }
+    }
+
+    /// <summary>
+    /// 开始游戏的时候用来寻找要加载的场景中的入口传送门
+    /// </summary>
+    /// <returns></returns>
+    public Transform GetEntrance()
+    {
+        foreach (var destination in FindObjectsOfType<TransitionDestination>())
+        {
+            if (destination.destinationTag==TransitionDestination.DestinationTag.Enter)
+            {
+                return destination.transform;
+            }
+        }
+
+        return null;
     }
 }

@@ -2,10 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Object = System.Object;
 
 public class SaveManager : Singleton<SaveManager>
 {
+    private string _sceneName = "LEVEL"; //退出游戏时保存当前的场景名称，以便继续游戏可以重回到此场景
+
+    public string SceneName => PlayerPrefs.GetString(_sceneName); 
+    
     protected override void Awake()
     {
         base.Awake();
@@ -14,6 +19,11 @@ public class SaveManager : Singleton<SaveManager>
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneController.Instance.TransitionToMainMenu();
+        }
+        
         if (Input.GetKeyDown(KeyCode.S))
         {
             SavaData();
@@ -45,6 +55,7 @@ public class SaveManager : Singleton<SaveManager>
     {
         var json = JsonUtility.ToJson(data,true);
         PlayerPrefs.SetString(key,json);
+        PlayerPrefs.SetString(_sceneName, SceneManager.GetActiveScene().name);
         //保存数据到磁盘中
         PlayerPrefs.Save();
     }

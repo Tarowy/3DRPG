@@ -1,19 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
-public class SceneController : Singleton<SceneController>
+public class SceneController : Singleton<SceneController>,IEndGameObserver
 {
     public GameObject playerPrefab;
+    public FadeCanvas fadeCanvasPrefab;
+    private bool _fadeFinished;
     
     protected override void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(this);
+
+        _fadeFinished = true;
     }
-    
+
+    private void Start()
+    {
+        GameManager.Instance.AddObserver(this);
+    }
+
     /// <summary>
     /// 别的传送门调用此方法，将自己的目的传送门的信息传进来
     /// portal中的destinationTag是目的传送门的标签
@@ -98,14 +108,17 @@ public class SceneController : Singleton<SceneController>
     /// <returns></returns>
     private IEnumerator LoadLevel(string sceneName)
     {
+        FadeCanvas fadeCanvas = Instantiate(fadeCanvasPrefab);
         if (!sceneName.Equals(""))
         {
+            yield return StartCoroutine(fadeCanvas.FadeOut(2f));
             yield return SceneManager.LoadSceneAsync(sceneName);
             
             var entrance = GameManager.Instance.GetEntrance();
             yield return Instantiate(playerPrefab, entrance.position, entrance.rotation);
             
             SaveManager.Instance.SavaData();
+            yield return StartCoroutine(fadeCanvas.FadeIn(2f));
         }
     }
 
@@ -114,9 +127,28 @@ public class SceneController : Singleton<SceneController>
         StartCoroutine(LoadMain());
     }
 
+    /// <summary>
+    /// 淡入淡出回到主菜单
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator LoadMain()
     {
+        FadeCanvas fadeCanvas = Instantiate(fadeCanvasPrefab);
+        yield return StartCoroutine(fadeCanvas.FadeOut(2f));
         SaveManager.Instance.SavaData();
         yield return SceneManager.LoadSceneAsync("Main");
+        yield return StartCoroutine(fadeCanvas.FadeIn(2f));
+    }
+    
+    public void EndNotify()
+    {
+        //GameManager会循环执行此方法，必须加条件使其无法循环执行
+        if (_fadeFinished)
+        {
+            _fadeFinished = false;
+            //人物死亡，删除所有数据，返回主菜单
+            PlayerPrefs.DeleteAll();
+            StartCoroutine(LoadMain());
+        }
     }
 }

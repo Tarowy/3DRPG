@@ -54,7 +54,6 @@ public class CharacterStats : MonoBehaviour
 
         if (attacker.isCritical)
         {
-            Debug.Log("暴击");
             defender.GetComponent<Animator>().SetTrigger("Hit");
         }
 
@@ -62,7 +61,7 @@ public class CharacterStats : MonoBehaviour
 
         if (CurrentHealth <= 0)
         {
-            attacker.characterDataSo.UpdateExp(characterDataSo.killPoint);
+            StartCoroutine(attacker.characterDataSo.UpdateExp(characterDataSo.killPoint));
         }
     }
 

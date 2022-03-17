@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a1e61d8e09d48d4999320043c55b8eb, type: 3}
   m_Name: Enemy_Grunt
   m_EditorClassIdentifier: 
-  maxHealth: 40
-  currentHealth: 40
-  baseDefence: 0
-  currentDefence: 0
+  maxHealth: 60
+  currentHealth: 60
+  baseDefence: 3
+  currentDefence: 3
   killPoint: 70
   currentLevel: 0
   maxLevel: 0

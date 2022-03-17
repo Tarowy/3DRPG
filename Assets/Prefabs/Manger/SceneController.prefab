@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 966389528476740603, guid: f99bfbe8521cf724fb73d08117a63151, type: 3}
+  fadeCanvasPrefab: {fileID: 6096380771194287197, guid: 8820ac4e1372756428d85d09a7d51a5d, type: 3}

@@ -45,10 +45,9 @@ public class HealthBarUI : MonoBehaviour
 
     private void UpdateHealthBar(int currentHealth, int maxHealth)
     {
-        Debug.Log("更新：" + gameObject.name);
-        
         if (currentHealth <= 0)
         {
+            characterStats.UpdateHealthBarOnAttack -= UpdateHealthBar;
             Destroy(_uiBar.gameObject);
             return;
         }

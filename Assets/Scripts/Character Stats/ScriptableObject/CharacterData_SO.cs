@@ -23,13 +23,15 @@ public class CharacterData_SO : ScriptableObject //ScriptableObject可以在文�
 
     public float LevelMultiply => 1 + (currentLevel - 1) * levelBuff;
 
-    public void UpdateExp(int point)
+    public IEnumerator UpdateExp(int point)
     {
         currentExp += point;
 
-        if (currentExp >= baseExp)
+        while (currentExp > baseExp)
         {
+            currentExp -= baseExp;
             LevelUp();
+            yield return null;
         }
     }
 

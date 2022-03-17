@@ -164,6 +164,12 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                     else 
                         enemyStates = EnemyStates.PATROL;
                 }
+
+                //如果当前在挨打就不执行攻击行为
+                if (_animator.GetCurrentAnimatorStateInfo(2).IsName("GetHit"))
+                {
+                    return;
+                }
                 
                 //玩家在攻击范围内则进行攻击
                 if (TargetInSkillRange() || TargetInAttackRange()) //如果在技能范围内则不攻击，一直释放技能

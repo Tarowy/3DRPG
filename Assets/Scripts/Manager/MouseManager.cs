@@ -44,6 +44,9 @@ public class MouseManager : Singleton<MouseManager>
                 case "Portal":
                     Cursor.SetCursor(doorway, new Vector2(16, 16), CursorMode.Auto);
                     break;
+                case "Item":
+                    Cursor.SetCursor(point, new Vector2(16, 16), CursorMode.Auto);
+                    break;
                 default:
                     Cursor.SetCursor(arrow, new Vector2(16, 16), CursorMode.Auto);
                     break;
@@ -68,8 +71,11 @@ public class MouseManager : Singleton<MouseManager>
             {
                 ONEnemyClicked?.Invoke(_hitInfo.collider.gameObject);
             }
-
             if (_hitInfo.collider.CompareTag("Portal"))
+            {
+                ONMouseClicked?.Invoke(_hitInfo.point);
+            }
+            if (_hitInfo.collider.CompareTag("Item"))
             {
                 ONMouseClicked?.Invoke(_hitInfo.point);
             }

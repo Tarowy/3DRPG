@@ -2416,6 +2416,7 @@ MonoBehaviour:
   tempCharacterDataSo: {fileID: 11400000, guid: 15b193ec0dc73094f9bd3398b5ae975d, type: 2}
   characterDataSo: {fileID: 11400000, guid: 15b193ec0dc73094f9bd3398b5ae975d, type: 2}
   attackDataSo: {fileID: 11400000, guid: 0f2486f7aaa59304faf649a459278023, type: 2}
+  weaponSlot: {fileID: 966389528476841561}
   isCritical: 0
 --- !u!1 &966389528476740605
 GameObject:

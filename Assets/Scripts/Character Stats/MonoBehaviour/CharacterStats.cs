@@ -11,6 +11,9 @@ public class CharacterStats : MonoBehaviour
     
     public CharacterData_SO characterDataSo; //从指定的脚本中读取数据
     public AttackData_SO attackDataSo;
+
+    public Transform weaponSlot;
+    
     [HideInInspector]
     public bool isCritical;
 
@@ -83,6 +86,22 @@ public class CharacterStats : MonoBehaviour
     {
         int coreDamage = Random.Range(attackDataSo.minDamage, attackDataSo.maxDamage);
         return isCritical ? (int)(coreDamage * attackDataSo.criticalMultiply) : coreDamage;
+    }
+
+    #endregion
+
+    #region Weapon
+
+    public void EquipWeapon(Item_SO itemSo)
+    {
+        if (itemSo.weaponPrefab != null)
+        {
+            var weapon = Instantiate(itemSo.weaponPrefab,weaponSlot);
+            weapon.transform.localPosition = new Vector3(0, 0, 0);
+            weapon.transform.localEulerAngles = new Vector3(-180, 0, 0);
+        }
+        //应用武器数据
+        attackDataSo.ApplyWeaponData(itemSo.attackDataSo);
     }
 
     #endregion

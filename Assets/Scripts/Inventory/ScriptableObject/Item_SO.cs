@@ -19,4 +19,5 @@ public class Item_SO : ScriptableObject
     public bool stackAble;
 
     public GameObject weaponPrefab;
+    public AttackData_SO attackDataSo;
 }

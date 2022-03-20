@@ -13,6 +13,7 @@ public class ItemPickUp : MonoBehaviour
         {
             if (InventoryManager.Instance.inventoryDataSo.AddItem(isoItemSo,isoItemSo.itemAmount))
             {
+                InventoryManager.Instance.inventoryUI.RefreshUI();
                 //销毁
                 Destroy(gameObject);
             }

@@ -20,13 +20,16 @@ public class SlotHolder : MonoBehaviour
         {
             case SlotType.BAG:
                 //如果该格子是背包里的，那么就将单例的背包数据传到里面去
-                itemUI.bag = InventoryManager.Instance.inventoryDataSo;
+                itemUI.bag = InventoryManager.Instance.inventoryData;
                 break;
             case SlotType.ARMOR:
+                itemUI.bag = InventoryManager.Instance.equipmentData;
                 break;
             case SlotType.WEAPON:
+                itemUI.bag = InventoryManager.Instance.equipmentData;
                 break;
             case SlotType.ACTION:
+                itemUI.bag = InventoryManager.Instance.actionData;
                 break;
         }
 

@@ -11,7 +11,7 @@ public class ItemPickUp : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (InventoryManager.Instance.inventoryDataSo.AddItem(isoItemSo,isoItemSo.itemAmount))
+            if (InventoryManager.Instance.inventoryData.AddItem(isoItemSo,isoItemSo.itemAmount))
             {
                 InventoryManager.Instance.inventoryUI.RefreshUI();
                 //销毁

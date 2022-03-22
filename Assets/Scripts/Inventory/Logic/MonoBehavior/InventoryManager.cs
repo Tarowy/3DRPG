@@ -32,4 +32,53 @@ public class InventoryManager : Singleton<InventoryManager>
         actionUI.RefreshUI();
         equipmentUI.RefreshUI();
     }
+
+    #region 检查鼠标位于哪个背包UI之上
+
+    public bool CheckInventoryUI(Vector3 position)
+    {
+        foreach (var t in inventoryUI.slotHolders)
+        {
+            var rect = t.transform as RectTransform;
+            //判断该position是否处于RectTransform之中
+            if (RectTransformUtility.RectangleContainsScreenPoint(rect,position))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public bool CheckActionUI(Vector3 position)
+    {
+        foreach (var t in actionUI.slotHolders)
+        {
+            var rect = t.transform as RectTransform;
+            //判断该position是否处于RectTransform之中
+            if (RectTransformUtility.RectangleContainsScreenPoint(rect,position))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public bool CheckEquipmentUI(Vector3 position)
+    {
+        foreach (var t in equipmentUI.slotHolders)
+        {
+            var rect = t.transform as RectTransform;
+            //判断该position是否处于RectTransform之中
+            if (RectTransformUtility.RectangleContainsScreenPoint(rect,position))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    #endregion
 }

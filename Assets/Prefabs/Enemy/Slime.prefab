@@ -521,9 +521,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c158efd41b699484ab98434fe7e00b6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tempCharacterDataSo: {fileID: 0}
+  tempCharacterDataSo: {fileID: 11400000, guid: 5a9aefd8b8f59ab41a233d7c8139e392, type: 2}
+  tempAttackDataSo: {fileID: 11400000, guid: 8d3231ae980f65a44b22428d01f4226a, type: 2}
   characterDataSo: {fileID: 0}
   attackDataSo: {fileID: 0}
+  weaponSlot: {fileID: 0}
   isCritical: 0
 --- !u!1 &4778150064674294358
 GameObject:

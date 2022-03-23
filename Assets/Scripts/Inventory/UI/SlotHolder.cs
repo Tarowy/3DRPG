@@ -9,6 +9,7 @@ public enum SlotType
     ARMOR,
     ACTION
 }
+
 public class SlotHolder : MonoBehaviour
 {
     public SlotType slotType;
@@ -27,6 +28,16 @@ public class SlotHolder : MonoBehaviour
                 break;
             case SlotType.WEAPON:
                 itemUI.bag = InventoryManager.Instance.equipmentData;
+                //武器槽位不为空则修改人物攻击数据
+                if (itemUI.bag.inventoryItems[itemUI.index].itemSo != null)
+                {
+                    GameManager.Instance.playerStats.ChangeWeapon(itemUI.bag.inventoryItems[itemUI.index].itemSo);
+                }
+                //武器槽位为空则还原人物原始攻击数据
+                else
+                {
+                    GameManager.Instance.playerStats.UnEquipmentWeapon();
+                }
                 break;
             case SlotType.ACTION:
                 itemUI.bag = InventoryManager.Instance.actionData;

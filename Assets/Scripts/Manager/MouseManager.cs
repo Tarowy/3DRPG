@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 // [System.Serializable] //该类不是继承于monoBehaviour所以需要序列化才能在Unity中显示出来
 // public class EventVector3 : UnityEvent<Vector3> { } //类似于委托，可以委托Unity的事件
@@ -23,7 +24,10 @@ public class MouseManager : Singleton<MouseManager>
     private void Update()
     {
         SetCursorTexture();
-        MouseControl();
+        if (!InteractWithUI())
+        {
+            MouseControl();
+        }
     }
 
     private void SetCursorTexture()
@@ -80,5 +84,19 @@ public class MouseManager : Singleton<MouseManager>
                 ONMouseClicked?.Invoke(_hitInfo.point);
             }
         }
+    }
+
+    /// <summary>
+    /// 如果鼠标在UI之上就不执行人物的行走行为
+    /// </summary>
+    /// <returns></returns>
+    public bool InteractWithUI()
+    {
+        if (EventSystem.current!=null&& EventSystem.current.IsPointerOverGameObject())
+        {
+            return true;
+        }
+
+        return false;
     }
 }

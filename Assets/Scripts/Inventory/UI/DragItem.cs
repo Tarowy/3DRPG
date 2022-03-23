@@ -54,16 +54,32 @@ public class DragItem : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHan
                     ? eventData.pointerEnter.gameObject.GetComponent<SlotHolder>()
                     : eventData.pointerEnter.gameObject.GetComponentInParent<SlotHolder>();
 
+                //根据目标槽位的类型判断是否能放入其中
                 switch (_targetHolder.slotType)
                 {
                     case SlotType.BAG:
                         SwapItem();
                         break;
                     case SlotType.WEAPON:
+                        if (_currentItemUI.bag.inventoryItems[_currentItemUI.index].itemSo.itemType ==
+                            ItemType.Weapon)
+                        {
+                            SwapItem();
+                        }
                         break;
                     case SlotType.ARMOR:
+                        if (_currentItemUI.bag.inventoryItems[_currentItemUI.index].itemSo.itemType ==
+                            ItemType.Armor)
+                        {
+                            SwapItem();
+                        }
                         break;
                     case SlotType.ACTION:
+                        if (_currentItemUI.bag.inventoryItems[_currentItemUI.index].itemSo.itemType ==
+                            ItemType.Usable)
+                        {
+                            SwapItem();
+                        }
                         break;
                 }
                 _currentHolder.UpdateItem();

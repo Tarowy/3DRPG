@@ -165,6 +165,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8065745538698907654}
   - component: {fileID: 5643386513682992386}
+  - component: {fileID: 8462940492628788595}
   m_Layer: 0
   m_Name: ItemUI
   m_TagString: Untagged
@@ -206,3 +207,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 256271705674698623}
   amount: {fileID: 256271706646315793}
+--- !u!114 &8462940492628788595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8704789698544368183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f27437ccc8d5994c9425252918be083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

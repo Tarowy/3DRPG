@@ -268,8 +268,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tempCharacterDataSo: {fileID: 11400000, guid: 60656fbcae198ae4ba488fb6a2ede232, type: 2}
+  tempAttackDataSo: {fileID: 11400000, guid: 0da93f6aaf5847e4f8cf7a172230b2d9, type: 2}
   characterDataSo: {fileID: 0}
-  attackDataSo: {fileID: 11400000, guid: 0da93f6aaf5847e4f8cf7a172230b2d9, type: 2}
+  attackDataSo: {fileID: 0}
+  weaponSlot: {fileID: 0}
   isCritical: 0
 --- !u!114 &7446754778718571433
 MonoBehaviour:

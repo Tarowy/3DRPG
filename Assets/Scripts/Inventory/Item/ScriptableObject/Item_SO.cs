@@ -19,6 +19,10 @@ public class Item_SO : ScriptableObject
     [TextArea] public string description = "";
     public bool stackAble;
 
+    [Header("UsableItem")] 
+    public UsableItem_SO usableItemSo;
+
+    [Header("WeaponItem")]
     public GameObject weaponPrefab;
     public AttackData_SO attackDataSo;
 }

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public enum SlotType
 {
@@ -10,7 +12,7 @@ public enum SlotType
     ACTION
 }
 
-public class SlotHolder : MonoBehaviour
+public class SlotHolder : MonoBehaviour, IPointerClickHandler
 {
     public SlotType slotType;
     public ItemUI itemUI;
@@ -38,6 +40,7 @@ public class SlotHolder : MonoBehaviour
                 {
                     GameManager.Instance.playerStats.UnEquipmentWeapon();
                 }
+
                 break;
             case SlotType.ACTION:
                 itemUI.bag = InventoryManager.Instance.actionData;
@@ -47,5 +50,32 @@ public class SlotHolder : MonoBehaviour
         //拿到InventoryData_SO中对应索引的InventoryItem数据
         var inventoryItem = itemUI.bag.inventoryItems[itemUI.index];
         itemUI.SetUpItemUI(inventoryItem.itemSo, inventoryItem.amount);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        //如果点击的次数是2的倍数则使用该物品
+        if (eventData.clickCount % 2 == 0)
+        {
+            UseItem();
+        }
+    }
+
+    public bool UseItem()
+    {
+        if (itemUI.GetInventoryItem().itemSo.itemType == ItemType.Usable && itemUI.GetInventoryItem().amount > 0)
+        {
+            //回血是否成功
+            if (GameManager.Instance.playerStats.ApplyHealth(itemUI.GetInventoryItem().itemSo.usableItemSo.healthPoint))
+            {
+                itemUI.GetInventoryItem().amount--;
+                UpdateItem();
+                return true;
+            }
+
+            return false;
+        }
+
+        return false;
     }
 }

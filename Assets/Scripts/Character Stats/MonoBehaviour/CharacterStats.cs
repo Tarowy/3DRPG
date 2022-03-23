@@ -120,15 +120,32 @@ public class CharacterStats : MonoBehaviour
     public void UnEquipmentWeapon()
     {
         //销毁武器槽位的所有子物体
-        if (weaponSlot.childCount!=0)
+        if (weaponSlot.childCount != 0)
         {
             for (int i = 0; i < weaponSlot.childCount; i++)
             {
                 Destroy(weaponSlot.GetChild(i).gameObject);
             }
         }
+
         //还原原始攻击数据
         attackDataSo.ApplyWeaponData(tempAttackDataSo);
+    }
+
+    #endregion
+
+    #region 回血相关
+
+    public bool ApplyHealth(int amount)
+    {
+        //满血就不回复
+        if (CurrentHealth==MaxHealth)
+        {
+            return false;
+        }
+
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, MaxHealth);
+        return true;
     }
 
     #endregion

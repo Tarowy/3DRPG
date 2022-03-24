@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3420309799404603021}
   - component: {fileID: 3420309799405732941}
   - component: {fileID: 3420309799407934098}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sword_eq
   m_TagString: Untagged
   m_Icon: {fileID: 0}

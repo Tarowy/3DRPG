@@ -63,6 +63,10 @@ public class SlotHolder : MonoBehaviour, IPointerClickHandler
 
     public bool UseItem()
     {
+        if (!itemUI.GetInventoryItem().itemSo)
+        {
+            return false;
+        }
         if (itemUI.GetInventoryItem().itemSo.itemType == ItemType.Usable && itemUI.GetInventoryItem().amount > 0)
         {
             //回血是否成功

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryManager : Singleton<InventoryManager>
 {
@@ -25,12 +26,55 @@ public class InventoryManager : Singleton<InventoryManager>
     [Header("Drag Canvas")]
     public Canvas dragCanvas;
     public DragData dragData;
-    
+
+    [Header("Stats")] 
+    public Text healthText;
+    public Text attackText;
+    public Text defenceText;
+    public Text criticalText;
+
+    [Header("Components")] 
+    public GameObject bagPanel;
+    public GameObject equipPanel;
+
+    private bool _isOpen;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(this);
+    }
+
     private void Start()
     {
         inventoryUI.RefreshUI();
         actionUI.RefreshUI();
         equipmentUI.RefreshUI();
+    }
+
+    private void Update()
+    {
+        SwitchInventory();
+
+        var playerStats = GameManager.Instance.playerStats;
+        UpdateStats(playerStats.CurrentHealth, playerStats.attackDataSo.minDamage, playerStats.attackDataSo.maxDamage,
+            playerStats.CurrentDefence, playerStats.attackDataSo.criticalChance);
+    }
+
+    private void SwitchInventory()
+    {
+        if (!Input.GetKeyDown(KeyCode.Q)) return;
+        _isOpen = !_isOpen;
+        equipPanel.SetActive(_isOpen);
+        bagPanel.SetActive(_isOpen);
+    }
+
+    private void UpdateStats(int health, int attackMin, int attackMax, int defence, float critical)
+    {
+        healthText.text = health.ToString();
+        attackText.text = attackMin + " ~ " + attackMax;
+        defenceText.text = defence.ToString();
+        criticalText.text = (critical * 100).ToString() + "%";
     }
 
     #region 检查鼠标位于哪个背包UI之上

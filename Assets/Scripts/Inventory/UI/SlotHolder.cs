@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ public enum SlotType
     ACTION
 }
 
-public class SlotHolder : MonoBehaviour, IPointerClickHandler
+public class SlotHolder : MonoBehaviour, IPointerClickHandler,IPointerEnterHandler,IPointerExitHandler
 {
     public SlotType slotType;
     public ItemUI itemUI;
@@ -81,5 +82,26 @@ public class SlotHolder : MonoBehaviour, IPointerClickHandler
         }
 
         return false;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (itemUI.GetInventoryItem().itemSo)
+        {
+            InventoryManager.Instance.itemToolTip.GetComponent<ItemToolTip>()
+                .SetupToolTip(itemUI.GetInventoryItem().itemSo);
+            InventoryManager.Instance.itemToolTip.SetActive(true);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        InventoryManager.Instance.itemToolTip.SetActive(false);
+    }
+
+    public void OnDisable()
+    {
+        //在自己被Disable的时候也将信息UI隐藏
+        InventoryManager.Instance.itemToolTip.SetActive(false);
     }
 }

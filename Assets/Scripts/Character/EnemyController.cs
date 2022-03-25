@@ -54,8 +54,14 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     
     private void OnDisable() //OnDisable是在销毁之后才执行的，OnDestroy是在销毁时执行的
     {
-        if (!GameManager.IsInitialized) return; //如果GameManager还未初始化，执行下面的会导致报错
+        if (GameManager.IsInitialized) return; //如果GameManager还未初始化，执行下面的会导致报错
         GameManager.Instance.RemoveObserver(this);
+        Debug.Log("执行掉落"+gameObject.name);
+        //死亡的之后掉落物品
+        if (GetComponent<LootSpawner>() && _isDeath)
+        {
+            GetComponent<LootSpawner>().SpawnLoot();
+        }
     }
 
     private void Start()

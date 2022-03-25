@@ -21,3 +21,4 @@ MonoBehaviour:
   usableItemSo: {fileID: 11400000, guid: 5821ec5b06fa6634bb2bcb0c2a6e0b58, type: 2}
   weaponPrefab: {fileID: 0}
   attackDataSo: {fileID: 0}
+  weaponAnimator: {fileID: 0}

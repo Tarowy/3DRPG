@@ -37,6 +37,9 @@ public class InventoryManager : Singleton<InventoryManager>
     public GameObject bagPanel;
     public GameObject equipPanel;
 
+    [Header("ItemToolTip")] 
+    public GameObject itemToolTip;
+
     private bool _isOpen;
 
     protected override void Awake()

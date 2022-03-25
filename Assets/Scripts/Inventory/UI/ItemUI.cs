@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,15 @@ public class ItemUI : MonoBehaviour
     public Image image;
     public Text amount;
 
+    private RectTransform _rectTransform;
+    
     public InventoryData_SO bag { set; get; }
     public int index { set; get; } = -1;
+
+    private void Awake()
+    {
+        _rectTransform = GetComponent<RectTransform>();
+    }
 
     public void SetUpItemUI(Item_SO itemSo, int itemAmount)
     {

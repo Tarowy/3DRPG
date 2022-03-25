@@ -18,5 +18,7 @@ MonoBehaviour:
   itemAmount: 1
   description: "\u4E00\u628A\u6218\u635F\u7684\u666E\u901A\u94C1\u5251"
   stackAble: 0
+  usableItemSo: {fileID: 0}
   weaponPrefab: {fileID: 3420309799407934093, guid: 983022d375d4e3444a4b61034fa51a07, type: 3}
   attackDataSo: {fileID: 11400000, guid: adad3533b36cc5142b6827274710a90a, type: 2}
+  weaponAnimator: {fileID: 9100000, guid: 6269be77b2ffdd046b3b7ace60f45a74, type: 2}

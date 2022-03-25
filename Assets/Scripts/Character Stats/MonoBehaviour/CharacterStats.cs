@@ -14,6 +14,7 @@ public class CharacterStats : MonoBehaviour
     public AttackData_SO attackDataSo;
 
     public Transform weaponSlot;
+    public RuntimeAnimatorController tempAnimator;
 
     [HideInInspector] public bool isCritical;
 
@@ -21,6 +22,7 @@ public class CharacterStats : MonoBehaviour
     {
         characterDataSo = (CharacterData_SO) Instantiate(tempCharacterDataSo);
         attackDataSo = Instantiate(tempAttackDataSo);
+        tempAnimator = GetComponent<Animator>().runtimeAnimatorController;
     }
 
     #region Read From Data_SO
@@ -112,6 +114,8 @@ public class CharacterStats : MonoBehaviour
 
         //应用武器数据
         attackDataSo.ApplyWeaponData(itemSo.attackDataSo);
+        //切换动画模组
+        GetComponent<Animator>().runtimeAnimatorController = itemSo.weaponAnimator;
     }
 
     /// <summary>
@@ -130,6 +134,8 @@ public class CharacterStats : MonoBehaviour
 
         //还原原始攻击数据
         attackDataSo.ApplyWeaponData(tempAttackDataSo);
+        //还原动画模组
+        GetComponent<Animator>().runtimeAnimatorController = tempAnimator;
     }
 
     #endregion

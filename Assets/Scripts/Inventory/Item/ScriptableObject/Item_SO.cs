@@ -25,4 +25,5 @@ public class Item_SO : ScriptableObject
     [Header("WeaponItem")]
     public GameObject weaponPrefab;
     public AttackData_SO attackDataSo;
+    public RuntimeAnimatorController weaponAnimator;
 }

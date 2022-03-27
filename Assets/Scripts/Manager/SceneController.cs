@@ -57,6 +57,8 @@ public class SceneController : Singleton<SceneController>,IEndGameObserver
         if (!sceneName.Equals(SceneManager.GetActiveScene().name))
         {
             SaveManager.Instance.SavaData();
+            //保存背包数据
+            InventoryManager.Instance.SaveData();
             yield return SceneManager.LoadSceneAsync(sceneName); //当另一个场景异步加载完毕，当前场景的一切都会消失
             
             var destTransform = GetTransitionDestination(destinationTag).transform;
@@ -118,6 +120,7 @@ public class SceneController : Singleton<SceneController>,IEndGameObserver
             yield return Instantiate(playerPrefab, entrance.position, entrance.rotation);
             
             SaveManager.Instance.SavaData();
+            InventoryManager.Instance.SaveData();
             yield return StartCoroutine(fadeCanvas.FadeIn(2f));
         }
     }

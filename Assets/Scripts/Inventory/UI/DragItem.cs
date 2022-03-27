@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using Debug = UnityEngine.Debug;
 
 [RequireComponent(typeof(ItemUI))]
-public class DragItem : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
+public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private ItemUI _currentItemUI;
     private SlotHolder _currentHolder;
@@ -26,8 +26,7 @@ public class DragItem : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHan
         InventoryManager.Instance.dragData.originalHolder = _currentHolder;
         InventoryManager.Instance.dragData.originalTransform = (RectTransform) _currentHolder.transform;
         //设置其父物体，是否保持local坐标系的所有状态还是改变成word坐标系
-        transform.SetParent(InventoryManager.Instance.dragCanvas.transform,true);
-        
+        transform.SetParent(InventoryManager.Instance.dragCanvas.transform, true);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -54,34 +53,42 @@ public class DragItem : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHan
                     ? eventData.pointerEnter.gameObject.GetComponent<SlotHolder>()
                     : eventData.pointerEnter.gameObject.GetComponentInParent<SlotHolder>();
 
-                //根据目标槽位的类型判断是否能放入其中
-                switch (_targetHolder.slotType)
+                //防止目标位置和当前位置一样导致物品消失
+                if (_targetHolder != _currentHolder)
                 {
-                    case SlotType.BAG:
-                        SwapItem();
-                        break;
-                    case SlotType.WEAPON:
-                        if (_currentItemUI.bag.inventoryItems[_currentItemUI.index].itemSo.itemType ==
-                            ItemType.Weapon)
-                        {
+                    //根据目标槽位的类型判断是否能放入其中
+                    switch (_targetHolder.slotType)
+                    {
+                        case SlotType.BAG:
                             SwapItem();
-                        }
-                        break;
-                    case SlotType.ARMOR:
-                        if (_currentItemUI.bag.inventoryItems[_currentItemUI.index].itemSo.itemType ==
-                            ItemType.Armor)
-                        {
-                            SwapItem();
-                        }
-                        break;
-                    case SlotType.ACTION:
-                        if (_currentItemUI.bag.inventoryItems[_currentItemUI.index].itemSo.itemType ==
-                            ItemType.Usable)
-                        {
-                            SwapItem();
-                        }
-                        break;
+                            break;
+                        case SlotType.WEAPON:
+                            if (_currentItemUI.bag.inventoryItems[_currentItemUI.index].itemSo.itemType ==
+                                ItemType.Weapon)
+                            {
+                                SwapItem();
+                            }
+
+                            break;
+                        case SlotType.ARMOR:
+                            if (_currentItemUI.bag.inventoryItems[_currentItemUI.index].itemSo.itemType ==
+                                ItemType.Armor)
+                            {
+                                SwapItem();
+                            }
+
+                            break;
+                        case SlotType.ACTION:
+                            if (_currentItemUI.bag.inventoryItems[_currentItemUI.index].itemSo.itemType ==
+                                ItemType.Usable)
+                            {
+                                SwapItem();
+                            }
+
+                            break;
+                    }
                 }
+
                 _currentHolder.UpdateItem();
                 _targetHolder.UpdateItem();
             }

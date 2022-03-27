@@ -15,8 +15,11 @@ public class InventoryManager : Singleton<InventoryManager>
     
     [Header("Inventor Data")] 
     public InventoryData_SO inventoryData;
+    public InventoryData_SO tempInventoryDataSo;
     public InventoryData_SO actionData;
+    public InventoryData_SO tempActionData;
     public InventoryData_SO equipmentData;
+    public InventoryData_SO tempEquipmentData;
     
     [Header("Containers")] 
     public ContainerUI inventoryUI;
@@ -45,11 +48,16 @@ public class InventoryManager : Singleton<InventoryManager>
     protected override void Awake()
     {
         base.Awake();
-        DontDestroyOnLoad(this);
+        inventoryData = Instantiate(tempInventoryDataSo);
+        actionData = Instantiate(tempActionData);
+        equipmentData = Instantiate(tempEquipmentData);
+        // DontDestroyOnLoad(this);
     }
 
     private void Start()
     {
+        //如果在SceneManager里直接读取背包数据会导致UI在读取数据之前刷新，从而无法更新图标
+        LoadData();
         inventoryUI.RefreshUI();
         actionUI.RefreshUI();
         equipmentUI.RefreshUI();
@@ -62,6 +70,20 @@ public class InventoryManager : Singleton<InventoryManager>
         var playerStats = GameManager.Instance.playerStats;
         UpdateStats(playerStats.CurrentHealth, playerStats.attackDataSo.minDamage, playerStats.attackDataSo.maxDamage,
             playerStats.CurrentDefence, playerStats.attackDataSo.criticalChance);
+    }
+
+    public void SaveData()
+    {
+        SaveManager.Instance.SaveData(inventoryData, inventoryData.name);
+        SaveManager.Instance.SaveData(actionData,actionData.name);
+        SaveManager.Instance.SaveData(equipmentData, equipmentData.name);
+    }
+
+    public void LoadData()
+    {
+        SaveManager.Instance.LoadData(inventoryData, inventoryData.name);
+        SaveManager.Instance.LoadData(actionData, actionData.name);
+        SaveManager.Instance.LoadData(equipmentData, equipmentData.name);
     }
 
     private void SwitchInventory()

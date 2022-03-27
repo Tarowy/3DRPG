@@ -13,7 +13,7 @@ public enum SlotType
     ACTION
 }
 
-public class SlotHolder : MonoBehaviour, IPointerClickHandler,IPointerEnterHandler,IPointerExitHandler
+public class SlotHolder : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public SlotType slotType;
     public ItemUI itemUI;
@@ -25,12 +25,15 @@ public class SlotHolder : MonoBehaviour, IPointerClickHandler,IPointerEnterHandl
             case SlotType.BAG:
                 //如果该格子是背包里的，那么就将单例的背包数据传到里面去
                 itemUI.bag = InventoryManager.Instance.inventoryData;
+                Debug.Log("BAG:"+itemUI.bag);
                 break;
             case SlotType.ARMOR:
                 itemUI.bag = InventoryManager.Instance.equipmentData;
+                Debug.Log("ARMOR:"+itemUI.bag);
                 break;
             case SlotType.WEAPON:
                 itemUI.bag = InventoryManager.Instance.equipmentData;
+                Debug.Log("WEAPON:"+itemUI.bag);
                 //武器槽位不为空则修改人物攻击数据
                 if (itemUI.bag.inventoryItems[itemUI.index].itemSo != null)
                 {
@@ -45,6 +48,7 @@ public class SlotHolder : MonoBehaviour, IPointerClickHandler,IPointerEnterHandl
                 break;
             case SlotType.ACTION:
                 itemUI.bag = InventoryManager.Instance.actionData;
+                Debug.Log("ACTION:"+itemUI.bag);
                 break;
         }
 
@@ -68,6 +72,7 @@ public class SlotHolder : MonoBehaviour, IPointerClickHandler,IPointerEnterHandl
         {
             return false;
         }
+
         if (itemUI.GetInventoryItem().itemSo.itemType == ItemType.Usable && itemUI.GetInventoryItem().amount > 0)
         {
             //回血是否成功
@@ -86,6 +91,7 @@ public class SlotHolder : MonoBehaviour, IPointerClickHandler,IPointerEnterHandl
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("Slot:" + itemUI.GetInventoryItem().itemSo);
         if (itemUI.GetInventoryItem().itemSo)
         {
             InventoryManager.Instance.itemToolTip.GetComponent<ItemToolTip>()

@@ -47,11 +47,11 @@ public class SaveManager : Singleton<SaveManager>
 
     /// <summary>
     /// 将数据转换为Json格式并使用PlayerPrefab保存
-    /// JsonUtility.ToJson(data,true) 数据类型，是否需要美观点的格式
+    /// JsonUtility.ToJson(data,true) :数据类型，是否需要美观点的格式
     /// </summary>
     /// <param name="data"></param>
     /// <param name="name"></param>
-    private void SaveData(Object data,string key)
+    public void SaveData(object data,string key)
     {
         var json = JsonUtility.ToJson(data,true);
         PlayerPrefs.SetString(key,json);
@@ -65,7 +65,7 @@ public class SaveManager : Singleton<SaveManager>
     /// </summary>
     /// <param name="data"></param>
     /// <param name="key"></param>
-    private void LoadData(Object data, string key)
+    public void LoadData(object data, string key)
     {
         if (PlayerPrefs.HasKey(key))
         {

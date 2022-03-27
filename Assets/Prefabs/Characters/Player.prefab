@@ -2354,7 +2354,7 @@ Animator:
   m_GameObject: {fileID: 966389528476740603}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: d9a1483b77bf10e4e851678ab6c2e54e, type: 3}
-  m_Controller: {fileID: 9100000, guid: 6269be77b2ffdd046b3b7ace60f45a74, type: 2}
+  m_Controller: {fileID: 22100000, guid: f484eb75f291182449734d5c7543b894, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2444,6 +2444,7 @@ MonoBehaviour:
   characterDataSo: {fileID: 0}
   attackDataSo: {fileID: 0}
   weaponSlot: {fileID: 966389528476841561}
+  tempAnimator: {fileID: 0}
   isCritical: 0
 --- !u!1 &966389528476740605
 GameObject:

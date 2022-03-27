@@ -42,6 +42,9 @@ public class ItemUI : MonoBehaviour
 
     public InventoryItem GetInventoryItem()
     {
+        Debug.Log("Item1:" + bag);
+        Debug.Log("Item2:" + bag.inventoryItems);
+        Debug.Log("Item3:" + index);
         return bag.inventoryItems[index];
     }
 }

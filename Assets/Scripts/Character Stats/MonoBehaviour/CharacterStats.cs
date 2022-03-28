@@ -109,7 +109,7 @@ public class CharacterStats : MonoBehaviour
         {
             var weapon = Instantiate(itemSo.weaponPrefab, weaponSlot);
             weapon.transform.localPosition = new Vector3(0, 0, 0);
-            weapon.transform.localEulerAngles = new Vector3(-180, 0, 0);
+            weapon.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
 
         //应用武器数据

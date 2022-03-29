@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 1
   itemName: "\u7834\u574F\u5251"
-  icon: {fileID: 21300000, guid: 391f97da05cf45240a8ecdec752cd9be, type: 3}
+  icon: {fileID: 21300000, guid: cc56a9c6bb6091245ab8e21aaaada545, type: 3}
   itemAmount: 1
-  description: "\u6765\u81EA\u5F02\u4E16\u754C\u7684\u5251"
+  description: "\u6765\u81EA\u6700\u7EC8\u5E7B\u60F37\u7684\u7834\u574F\u5251\uFF0C\u5A01\u529B\u975E\u51E1\n\t\u4E0D\u77E5\u9053\u4E0A\u4EC0\u4E48\u8272"
   stackAble: 0
   usableItemSo: {fileID: 0}
   weaponPrefab: {fileID: 8670790403889025678, guid: 57f8d7abfd8fe8d489c805c524d4e182, type: 3}

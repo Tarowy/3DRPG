@@ -30,7 +30,7 @@ public class ItemToolTip : MonoBehaviour
 
     public void SetupToolTip(Item_SO itemSo)
     {
-        nameText.text = itemSo.name;
+        nameText.text = itemSo.itemName;
         infoText.text = itemSo.description;
     }
 

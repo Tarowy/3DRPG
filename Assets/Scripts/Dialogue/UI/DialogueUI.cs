@@ -11,6 +11,9 @@ public class DialogueUI : Singleton<DialogueUI>
     public Button nextButton;
     public GameObject dialoguePanel;
 
+    [Header("Options")] public RectTransform optionPanel;
+    public OptionUI optionPrefab;
+
     [Header("Data")] public DialogueData_SO currentDialogueDataSo;
     public int currentIndex;
 
@@ -42,6 +45,7 @@ public class DialogueUI : Singleton<DialogueUI>
     public void UpdateMainText(DialoguePiece piece)
     {
         dialoguePanel.SetActive(true);
+        currentIndex++;
 
         if (piece.image != null)
         {
@@ -61,12 +65,38 @@ public class DialogueUI : Singleton<DialogueUI>
         //如果该条对话有选项就得禁用nextButton
         if (piece.options.Count == 0 && currentDialogueDataSo.dialoguePieces.Count > 0)
         {
-            nextButton.gameObject.SetActive(true);
-            currentIndex++;
+            nextButton.interactable = true;
+            nextButton.transform.GetChild(0).gameObject.SetActive(true);
         }
         else
         {
-            nextButton.gameObject.SetActive(false);
+            //如果直接禁用Button会打乱布局
+            // nextButton.gameObject.SetActive(false);
+            nextButton.interactable = false;
+            nextButton.transform.GetChild(0).gameObject.SetActive(false);
+        }
+
+        //创建Option
+        CreateOption(piece);
+    }
+
+    public void CreateOption(DialoguePiece piece)
+    {
+        //销毁当前Piece下的所有子物体
+        if (optionPanel.childCount > 0)
+        {
+            Debug.Log("销毁");
+            for (int i = 0; i < optionPanel.childCount; i++)
+            {
+                Destroy(optionPanel.GetChild(i).gameObject);
+            }
+        }
+
+        //生成对应数目的Option
+        for (int i = 0; i < piece.options.Count; i++)
+        {
+            var option = Instantiate(optionPrefab, optionPanel);
+            option.UpdateOption(piece, piece.options[i]);
         }
     }
 }

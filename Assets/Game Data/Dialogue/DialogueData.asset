@@ -15,8 +15,16 @@ MonoBehaviour:
   dialoguePieces:
   - id: 01
     image: {fileID: 21300000, guid: 391f97da05cf45240a8ecdec752cd9be, type: 3}
-    text: How are you?
-    options: []
+    text: 'How are you?
+
+'
+    options:
+    - text: I am fine,thank you
+      targetID: 02
+      taskQuest: 0
+    - text: I am good
+      targetID: 03
+      taskQuest: 0
   - id: 02
     image: {fileID: 0}
     text: That's Good!

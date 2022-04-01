@@ -18,18 +18,22 @@ MonoBehaviour:
     text: 'How are you?
 
 '
+    questDataSo: {fileID: 0}
     options:
     - text: I am fine,thank you
-      targetID: 02
+      targetID: 
       taskQuest: 0
     - text: I am good
-      targetID: 03
+      targetID: 02
       taskQuest: 0
   - id: 02
     image: {fileID: 0}
-    text: That's Good!
-    options: []
-  - id: 03
-    image: {fileID: 0}
-    text: That's OK!
-    options: []
+    text: "\u8FD9\u6709\u4E2A\u4EFB\u52A1\uFF0C\u5B8C\u6210\u4E86\u7ED9\u4F60\u4E2A\u5B9D\u8D1D"
+    questDataSo: {fileID: 11400000, guid: 75c2748af0a3f38479f148a2cee154d2, type: 2}
+    options:
+    - text: "\u6CA1\u5174\u8DA3"
+      targetID: 
+      taskQuest: 0
+    - text: "\u90A3\u592A\u597D\u4E86"
+      targetID: 
+      taskQuest: 1

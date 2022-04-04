@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b62c1329ff23dd34bb9ec4a0116b1618, type: 3}
   m_Name: QuestData
   m_EditorClassIdentifier: 
-  questName: "\u716E\u4E2A\u4E4C\u9F9F\u6C64"
+  questName: "\u716E\u4E2A\u4E4C\u9F9F\u6C64\u716E\u4E2A\u4E4C\u9F9F\u6C64\u716E\u4E2A\u4E4C\u9F9F\u6C64\u716E\u4E2A\u4E4C\u9F9F\u6C64\u716E\u4E2A\u4E4C\u9F9F\u6C64\u716E\u4E2A\u4E4C\u9F9F\u6C64"
   description: "\u8BA8\u4F10\u4E00\u4E2A\u4E4C\u9F9F\u518D\u6765\u4E24\u4E2A\u8611\u83C7\uFF0C\u7096\u4E2A\u4E4C\u9F9F\u6C64\u5C1D\u5C1D"
   isStarted: 0
   isCompleted: 0

@@ -61,6 +61,12 @@ public class OptionUI : MonoBehaviour
                     //没有这个任务就加入此任务加入
                     QuestManager.Instance.questTaskList.Add(newTask);
                     QuestManager.Instance.GetTask(newTask.questDataSo).IsStarted = true;
+                    
+                    //加入任务后检测背包里是不是已经有所需要的任务物品了
+                    foreach (var requireName in newTask.questDataSo.GetQuestRequireName())
+                    {
+                        InventoryManager.Instance.CheckQuestItemInBag(requireName);
+                    }
                 }
             }
         }

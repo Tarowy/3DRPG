@@ -41,4 +41,10 @@ public class QuestData_SO : ScriptableObject
             Debug.Log("任务完成");
         }
     }
+
+    //获取该任务所需要的所有物品的名字的列表
+    public List<string> GetQuestRequireName()
+    {
+        return questRequires.Select(require => require.targetName).ToList();
+    }
 }

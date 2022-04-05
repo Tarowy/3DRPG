@@ -31,6 +31,15 @@ public class OptionUI : MonoBehaviour
         _takeQuest = option.taskQuest; //判断当前选项是不是可以承接任务
     }
 
+    /// <summary>
+    /// 对话选项的按钮事件
+    /// 如果该选项可以承接任务：
+    ///     1.没有承接就在任务列表中加入这个任务
+    ///     2.承接过了该任务判断是否完成，完成了就给予奖励
+    /// 如果该选项不是承接任务的：
+    ///     1.有下一句话就将下一句话的ID传到对话框中
+    ///     2.没有下一句话就关闭对话框
+    /// </summary>
     public void ClickOption()
     {
         if (currentDialoguePiece.questDataSo != null)

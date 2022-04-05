@@ -25,7 +25,7 @@ public class QuestUI : Singleton<QuestUI>
 
     private void Start()
     {
-        InitQuestPanel();
+        // InitQuestPanel();
     }
 
     private void Update()
@@ -52,10 +52,16 @@ public class QuestUI : Singleton<QuestUI>
         questContentText.text = String.Empty;
         InitQuestPanel();
         yield return new WaitForEndOfFrame();
-        //需要等所有任务列表加载完之后才能启用verticalLayoutGroup，否则布局会乱
+
+        /*
+         * 需要等所有任务列表加载完之后才能启用verticalLayoutGroup，否则布局会乱
+         */
         verticalLayoutGroup.enabled = true;
-        //由于是在任务列表加载完后才开启verticalLayoutGroup，有一帧的时间会布局混乱
-        //虽然时间很短，但还是容易发现，所以可以先将透明度设置为0，启用verticalLayoutGroup后再设置为不透明
+
+        /*
+         * 由于上一步需要等所有任务列表加载完之后才能启用verticalLayoutGroup，有一帧的时间使混乱布局
+         * 虽然时间很短，但还是容易发现，所以可以先将透明度设置为0，启用verticalLayoutGroup后再设置为不透明
+         */
         canvasGroup.alpha = 1;
     }
 
@@ -78,7 +84,7 @@ public class QuestUI : Singleton<QuestUI>
     public void SetupRequireList(QuestData_SO questDataSo)
     {
         //防止出现上一次的任务需求
-       DestroyRequireList();
+        DestroyRequireList();
 
         foreach (var require in questDataSo.questRequires)
         {
@@ -100,7 +106,7 @@ public class QuestUI : Singleton<QuestUI>
             Destroy(item.gameObject);
         }
     }
-    
+
     public void DestroyRequireList()
     {
         foreach (Transform item in requireTransform)
@@ -108,7 +114,7 @@ public class QuestUI : Singleton<QuestUI>
             Destroy(item.gameObject);
         }
     }
-    
+
     public void DestroyRewardList()
     {
         foreach (Transform item in rewardTransform)

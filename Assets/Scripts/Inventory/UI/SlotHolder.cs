@@ -75,6 +75,7 @@ public class SlotHolder : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             if (GameManager.Instance.playerStats.ApplyHealth(itemUI.GetInventoryItem().itemSo.usableItemSo.healthPoint))
             {
                 itemUI.GetInventoryItem().amount--;
+                QuestManager.Instance.UpdateQuestProgress(itemUI.GetInventoryItem().itemSo.itemName, -1);
                 UpdateItem();
                 return true;
             }

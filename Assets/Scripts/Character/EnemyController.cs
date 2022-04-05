@@ -62,6 +62,11 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         {
             GetComponent<LootSpawner>().SpawnLoot();
         }
+
+        if (!QuestManager.IsInitialized && _isDeath)
+        {
+            QuestManager.Instance.UpdateQuestProgress(this.name, 1);
+        }
     }
 
     private void Start()

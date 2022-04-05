@@ -18,7 +18,7 @@ MonoBehaviour:
   isCompleted: 0
   isFinished: 0
   questRequires:
-  - targetName: Mushroom
+  - targetName: "\u5927\u8611\u83C7"
     requireAmount: 2
     currentAmount: 0
   - targetName: TurtleShell

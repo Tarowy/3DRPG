@@ -24,7 +24,7 @@ public class QuestNameBtn : MonoBehaviour
         currentQuestDataSo = questDataSo;
 
         questNameText.text = currentQuestDataSo.isCompleted
-            ? currentQuestDataSo.questName + "(已完成)"
+            ? currentQuestDataSo.questName + "\n(已完成)"
             : currentQuestDataSo.questName;
     }
 

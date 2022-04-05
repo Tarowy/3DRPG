@@ -10,6 +10,7 @@ public class ItemUI : MonoBehaviour
     public Text amount;
 
     private RectTransform _rectTransform;
+    public Item_SO currentItemDataSo;
     
     public InventoryData_SO bag { set; get; }
     public int index { set; get; } = -1;
@@ -35,6 +36,7 @@ public class ItemUI : MonoBehaviour
             return;
         }
 
+        currentItemDataSo = itemSo;
         image.sprite = itemSo.icon;
         amount.text = itemAmount.ToString();
         image.gameObject.SetActive(true);

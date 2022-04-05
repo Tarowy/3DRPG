@@ -18,6 +18,6 @@ public class QuestRequirement : MonoBehaviour
     public void UpdateRequirement(string requireName,int currentAmount,int totalAmount)
     {
         _requireName.text = requireName;
-        _progressNumber.text = currentAmount.ToString() + " / " + totalAmount.ToString();
+        _progressNumber.text = currentAmount + " / " + totalAmount;
     }
 }

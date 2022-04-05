@@ -32,5 +32,11 @@ public class QuestNameBtn : MonoBehaviour
     {
         questContentText.text = currentQuestDataSo.description;
         QuestUI.Instance.SetupRequireList(currentQuestDataSo);
+
+        QuestUI.Instance.DestroyRewardList();
+        foreach (var inventoryItem in currentQuestDataSo.rewardItems)
+        {
+            QuestUI.Instance.SetupRewardList(inventoryItem.itemSo, inventoryItem.amount);
+        }
     }
 }

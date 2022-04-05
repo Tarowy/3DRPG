@@ -9,6 +9,8 @@ public class QuestUI : Singleton<QuestUI>
     [Header("Elements")] public GameObject questPanel;
     public ItemToolTip itemToolTip;
     private bool _isOpened;
+    public VerticalLayoutGroup verticalLayoutGroup;
+    public CanvasGroup canvasGroup;
 
     [Header("Quest Name")] public RectTransform questListTransform;
     public QuestNameBtn questNameBtn;
@@ -30,36 +32,44 @@ public class QuestUI : Singleton<QuestUI>
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            _isOpened = !_isOpened;
-            questPanel.SetActive(_isOpened);
-            questContentText.text = String.Empty;
+            StartCoroutine(ShowQuestList());
         }
+    }
+
+    private IEnumerator ShowQuestList()
+    {
+        _isOpened = !_isOpened;
+        questPanel.SetActive(_isOpened);
+
+        if (!_isOpened)
+        {
+            itemToolTip.gameObject.SetActive(false);
+            verticalLayoutGroup.enabled = false;
+            canvasGroup.alpha = 0;
+            yield break;
+        }
+
+        questContentText.text = String.Empty;
+        InitQuestPanel();
+        yield return new WaitForEndOfFrame();
+        //需要等所有任务列表加载完之后才能启用verticalLayoutGroup，否则布局会乱
+        verticalLayoutGroup.enabled = true;
+        //由于是在任务列表加载完后才开启verticalLayoutGroup，有一帧的时间会布局混乱
+        //虽然时间很短，但还是容易发现，所以可以先将透明度设置为0，启用verticalLayoutGroup后再设置为不透明
+        canvasGroup.alpha = 1;
     }
 
     private void InitQuestPanel()
     {
         //销毁所有子元素
-        foreach (Transform item in questListTransform)
-        {
-            Destroy(item.gameObject);
-        }
-        foreach (Transform item in requireTransform)
-        {
-            Destroy(item.gameObject);
-        }
-        foreach (Transform item in rewardTransform)
-        {
-            Destroy(item.gameObject);
-        }
-    }
+        DestroyQuestList();
+        DestroyRequireList();
+        DestroyRewardList();
 
-    public IEnumerator CreateQuestNameBtn()
-    {
         //重新创建任务列表
         foreach (var questTask in QuestManager.Instance.questTaskList)
         {
-            QuestNameBtn newTask;
-            yield return newTask = Instantiate(questNameBtn, questListTransform);
+            QuestNameBtn newTask = Instantiate(questNameBtn, questListTransform);
             newTask.InitQuestNameBtn(questTask.questDataSo);
             newTask.questContentText = this.questContentText;
         }
@@ -68,15 +78,42 @@ public class QuestUI : Singleton<QuestUI>
     public void SetupRequireList(QuestData_SO questDataSo)
     {
         //防止出现上一次的任务需求
+       DestroyRequireList();
+
+        foreach (var require in questDataSo.questRequires)
+        {
+            var requireList = Instantiate(questRequirement, requireTransform);
+            requireList.UpdateRequirement(require.targetName, require.currentAmount, require.requireAmount);
+        }
+    }
+
+    public void SetupRewardList(Item_SO itemSo, int amount)
+    {
+        var rewardItem = Instantiate(itemUI, rewardTransform);
+        rewardItem.SetUpItemUI(itemSo, amount);
+    }
+
+    public void DestroyQuestList()
+    {
+        foreach (Transform item in questListTransform)
+        {
+            Destroy(item.gameObject);
+        }
+    }
+    
+    public void DestroyRequireList()
+    {
         foreach (Transform item in requireTransform)
         {
             Destroy(item.gameObject);
         }
-
-        foreach (var require in questDataSo.questRequires)
+    }
+    
+    public void DestroyRewardList()
+    {
+        foreach (Transform item in rewardTransform)
         {
-            var requireList = Instantiate(questRequirement,requireTransform);
-            requireList.UpdateRequirement(require.targetName, require.currentAmount, require.requireAmount);
+            Destroy(item.gameObject);
         }
     }
 }

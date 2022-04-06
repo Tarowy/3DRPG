@@ -47,7 +47,7 @@ public class PlayerManger : MonoBehaviour
 
     private void Update()
     {
-        // Debug.Log(_characterStats + "player" + "--" + Time.time);
+        // Debug.Log("isStopped:" + _navMeshAgent.isStopped+"--"+Time.time);
         
         _isDeath = _characterStats.CurrentHealth == 0;
         if (_isDeath) //角色死亡之后就通知所有继承IEndGameNotify的对象
@@ -94,7 +94,7 @@ public class PlayerManger : MonoBehaviour
                _characterStats.attackDataSo.attackRange) //停止的距离会随着武器的长短而改变
         {
             _navMeshAgent.destination = _attackTarget.transform.position;
-            yield return null; //如果距离大于攻击距离就会一直靠近敌人
+            yield return null; //如果距离大于攻击距离就会一直靠近敌人 
         }
 
         _navMeshAgent.isStopped = true; //靠近敌人后停止行动以攻击

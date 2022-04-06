@@ -9,6 +9,8 @@ public class DialogueData_SO : ScriptableObject
     public List<DialoguePiece> dialoguePieces = new List<DialoguePiece>();
     public Dictionary<string, DialoguePiece> dialogueDictionary = new Dictionary<string, DialoguePiece>();
 
+    public QuestData_SO questInThisDialogueDataSo;
+
     //只有在Unity编译器中改变该SO的内容才会执行
 #if UNITY_EDITOR
     //只要该SO的内容被改变就执行该方法

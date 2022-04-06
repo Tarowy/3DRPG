@@ -20,6 +20,7 @@ public class Rock : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        Invoke("DestroySelf", 8f);
     }
 
     private void Start()
@@ -54,7 +55,7 @@ public class Rock : MonoBehaviour
             case RockStates.HitPlayer:
                 if (other.gameObject.CompareTag("Player"))
                 {
-                    other.gameObject.GetComponent<NavMeshAgent>().isStopped = true;
+                    // other.gameObject.GetComponent<NavMeshAgent>().isStopped = false;
                     other.gameObject.GetComponent<NavMeshAgent>().velocity = _direction * force;
 
                     other.gameObject.GetComponent<Animator>().SetTrigger("Dizzy");
@@ -75,5 +76,11 @@ public class Rock : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    private void DestroySelf()
+    {
+        Instantiate(rockBreak,transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }

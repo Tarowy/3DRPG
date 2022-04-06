@@ -8,7 +8,7 @@ public class OptionUI : MonoBehaviour
 {
     public Text optionText;
     private Button _thisButton;
-    private DialoguePiece currentDialoguePiece;
+    private DialoguePiece _currentDialoguePiece;
     public string nextPieceID;
     private bool _takeQuest;
 
@@ -25,7 +25,7 @@ public class OptionUI : MonoBehaviour
     /// <param name="option">该选项所包含的信息</param>
     public void UpdateOption(DialoguePiece piece, DialogueOption option)
     {
-        currentDialoguePiece = piece;
+        _currentDialoguePiece = piece;
         optionText.text = option.text;
         nextPieceID = option.targetID;
         _takeQuest = option.taskQuest; //判断当前选项是不是可以承接任务
@@ -42,11 +42,11 @@ public class OptionUI : MonoBehaviour
     /// </summary>
     public void ClickOption()
     {
-        if (currentDialoguePiece.questDataSo != null)
+        if (_currentDialoguePiece.questDataSo != null)
         {
             //直接生成一个任务的复制品DataSo防止覆盖原来的数据
             var newTask = new QuestManager.QuestTask()
-                {questDataSo = Instantiate(currentDialoguePiece.questDataSo)};
+                {questDataSo = Instantiate(_currentDialoguePiece.questDataSo)};
             
             if (_takeQuest)
             {

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaedc1f7db5f2674eb5b01c0041a18bf, type: 3}
+  m_Name: Progress_Knight
+  m_EditorClassIdentifier: 
+  dialoguePieces:
+  - id: piece01
+    image: {fileID: 0}
+    text: "\u8611\u83C7\u53EF\u4EE5\u5728\u5730\u4E0A\u6361\u53D6\u6216\u8005\u53F2\u83B1\u59C6\u6389\u843D"
+    questDataSo: {fileID: 0}
+    options: []
+  questInThisDialogueDataSo: {fileID: 0}

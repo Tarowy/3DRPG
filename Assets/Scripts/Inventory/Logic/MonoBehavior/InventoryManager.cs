@@ -12,36 +12,30 @@ public class InventoryManager : Singleton<InventoryManager>
         public SlotHolder originalHolder; //拖拽的物体原本的SlotHolder
         public RectTransform originalTransform; //拖拽的物体的原本的Parent
     }
-    
-    [Header("Inventor Data")] 
-    public InventoryData_SO inventoryData;
+
+    [Header("Inventor Data")] public InventoryData_SO inventoryData;
     public InventoryData_SO tempInventoryDataSo;
     public InventoryData_SO actionData;
     public InventoryData_SO tempActionData;
     public InventoryData_SO equipmentData;
     public InventoryData_SO tempEquipmentData;
-    
-    [Header("Containers")] 
-    public ContainerUI inventoryUI;
+
+    [Header("Containers")] public ContainerUI inventoryUI;
     public ContainerUI actionUI;
     public ContainerUI equipmentUI;
 
-    [Header("Drag Canvas")]
-    public Canvas dragCanvas;
+    [Header("Drag Canvas")] public Canvas dragCanvas;
     public DragData dragData;
 
-    [Header("Stats")] 
-    public Text healthText;
+    [Header("Stats")] public Text healthText;
     public Text attackText;
     public Text defenceText;
     public Text criticalText;
 
-    [Header("Components")] 
-    public GameObject bagPanel;
+    [Header("Components")] public GameObject bagPanel;
     public GameObject equipPanel;
 
-    [Header("ItemToolTip")] 
-    public GameObject itemToolTip;
+    [Header("ItemToolTip")] public GameObject itemToolTip;
 
     private bool _isOpen;
 
@@ -75,7 +69,7 @@ public class InventoryManager : Singleton<InventoryManager>
     public void SaveData()
     {
         SaveManager.Instance.SaveData(inventoryData, inventoryData.name);
-        SaveManager.Instance.SaveData(actionData,actionData.name);
+        SaveManager.Instance.SaveData(actionData, actionData.name);
         SaveManager.Instance.SaveData(equipmentData, equipmentData.name);
     }
 
@@ -110,7 +104,7 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             var rect = t.transform as RectTransform;
             //判断该position是否处于RectTransform之中
-            if (RectTransformUtility.RectangleContainsScreenPoint(rect,position))
+            if (RectTransformUtility.RectangleContainsScreenPoint(rect, position))
             {
                 return true;
             }
@@ -118,14 +112,14 @@ public class InventoryManager : Singleton<InventoryManager>
 
         return false;
     }
-    
+
     public bool CheckActionUI(Vector3 position)
     {
         foreach (var t in actionUI.slotHolders)
         {
             var rect = t.transform as RectTransform;
             //判断该position是否处于RectTransform之中
-            if (RectTransformUtility.RectangleContainsScreenPoint(rect,position))
+            if (RectTransformUtility.RectangleContainsScreenPoint(rect, position))
             {
                 return true;
             }
@@ -133,14 +127,14 @@ public class InventoryManager : Singleton<InventoryManager>
 
         return false;
     }
-    
+
     public bool CheckEquipmentUI(Vector3 position)
     {
         foreach (var t in equipmentUI.slotHolders)
         {
             var rect = t.transform as RectTransform;
             //判断该position是否处于RectTransform之中
-            if (RectTransformUtility.RectangleContainsScreenPoint(rect,position))
+            if (RectTransformUtility.RectangleContainsScreenPoint(rect, position))
             {
                 return true;
             }
@@ -148,7 +142,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
         return false;
     }
-    
+
     #endregion
 
     #region 检测任务物品
@@ -163,7 +157,7 @@ public class InventoryManager : Singleton<InventoryManager>
                 QuestManager.Instance.UpdateQuestProgress(item.itemSo.itemName, item.amount);
             }
         }
-        
+
         foreach (var item in actionData.inventoryItems)
         {
             if (item.itemSo == null) continue;
@@ -175,4 +169,24 @@ public class InventoryManager : Singleton<InventoryManager>
     }
 
     #endregion
+
+    /// <summary>
+    /// 查找背包里有没有任务需要的物品，返回其所在栏位的信息
+    /// </summary>
+    /// <param name="itemSo">要匹配的ItemSo数据</param>
+    /// <returns></returns>
+    public InventoryItem QuestItemInBag(Item_SO itemSo)
+    {
+        return inventoryData.inventoryItems.Find(i => i.itemSo == itemSo);
+    }
+
+    /// <summary>
+    /// 查找快捷栏里有没有任务需要的物品，返回其所在栏位的信息
+    /// </summary>
+    /// <param name="itemSo">要匹配的ItemSo数据</param>
+    /// <returns></returns>
+    public InventoryItem QuestItemInAction(Item_SO itemSo)
+    {
+        return actionData.inventoryItems.Find(i => i.itemSo == itemSo);
+    }
 }

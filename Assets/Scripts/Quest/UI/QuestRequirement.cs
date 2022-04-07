@@ -15,9 +15,20 @@ public class QuestRequirement : MonoBehaviour
         _progressNumber = transform.GetChild(0).GetComponent<Text>();
     }
 
-    public void UpdateRequirement(string requireName,int currentAmount,int totalAmount)
+    public void UpdateRequirement(string requireName, int currentAmount, int totalAmount)
     {
         _requireName.text = requireName;
         _progressNumber.text = currentAmount + " / " + totalAmount;
+    }
+
+    public void UpdateRequirement(string requireName, bool isFinished)
+    {
+        if (isFinished)
+        {
+            _requireName.text = requireName;
+            _progressNumber.text = "完成";
+            _requireName.color = Color.grey;
+            _progressNumber.color = Color.grey;
+        }
     }
 }

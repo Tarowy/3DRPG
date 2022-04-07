@@ -21,4 +21,8 @@ MonoBehaviour:
   - targetName: "\u5927\u8611\u83C7"
     requireAmount: 3
     currentAmount: 0
-  rewardItems: []
+  rewardItems:
+  - itemSo: {fileID: 11400000, guid: 59295e3fa694a3c4faba544f9cd708b3, type: 2}
+    amount: 1
+  - itemSo: {fileID: 11400000, guid: 787dbfc3e08949b4d9b05aa2512a7791, type: 2}
+    amount: -3

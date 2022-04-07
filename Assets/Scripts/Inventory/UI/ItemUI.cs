@@ -11,7 +11,7 @@ public class ItemUI : MonoBehaviour
 
     private RectTransform _rectTransform;
     public Item_SO currentItemDataSo;
-    
+
     public InventoryData_SO bag { set; get; }
     public int index { set; get; } = -1;
 
@@ -28,6 +28,12 @@ public class ItemUI : MonoBehaviour
             bag.inventoryItems[index].itemSo = null;
             image.gameObject.SetActive(false);
             return;
+        }
+
+        //隐藏任务奖励栏为负数的物品
+        if (itemAmount < 0)
+        {
+            itemSo = null;
         }
 
         if (itemSo is null)

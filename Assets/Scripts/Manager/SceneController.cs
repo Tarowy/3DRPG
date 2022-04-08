@@ -59,6 +59,8 @@ public class SceneController : Singleton<SceneController>,IEndGameObserver
             SaveManager.Instance.SavaData();
             //保存背包数据
             InventoryManager.Instance.SaveData();
+            //保存任务数据
+            QuestManager.Instance.SaveQuestSystem();
             yield return SceneManager.LoadSceneAsync(sceneName); //当另一个场景异步加载完毕，当前场景的一切都会消失
             
             var destTransform = GetTransitionDestination(destinationTag).transform;
@@ -139,6 +141,10 @@ public class SceneController : Singleton<SceneController>,IEndGameObserver
         FadeCanvas fadeCanvas = Instantiate(fadeCanvasPrefab);
         yield return StartCoroutine(fadeCanvas.FadeOut(2f));
         SaveManager.Instance.SavaData();
+        //保存背包数据
+        InventoryManager.Instance.SaveData();
+        //保存任务数据
+        QuestManager.Instance.SaveQuestSystem();
         yield return SceneManager.LoadSceneAsync("Main");
         yield return StartCoroutine(fadeCanvas.FadeIn(2f));
     }

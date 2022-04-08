@@ -43,6 +43,7 @@ public class QuestGiver : MonoBehaviour
 
     private void Update()
     {
+        //因为NPC更换对话数据是Update执行的所以会即时根据任务数据来更换对话，所以无需储存NPC当前的对话数据
         if (IsStarted)
         {
             //已经承接了任务且完成了，就切换到做完了任务的对话

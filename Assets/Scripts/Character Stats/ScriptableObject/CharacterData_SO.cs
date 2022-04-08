@@ -40,7 +40,7 @@ public class CharacterData_SO : ScriptableObject //ScriptableObject可以在文�
         currentLevel = Mathf.Clamp(currentLevel + 1, 0, maxLevel);
         baseExp = (int) (baseExp * LevelMultiply);
 
-        maxHealth = (int) (maxHealth * LevelMultiply);
+        maxHealth += 10;
         currentHealth = maxHealth;
     }
 }

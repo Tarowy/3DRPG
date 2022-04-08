@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,47 @@ public class QuestManager : Singleton<QuestManager>
     }
 
     public List<QuestTask> questTaskList = new List<QuestTask>();
+
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(this);
+    }
+    
+    private void Start()
+    {
+        LoadQuestSystem();
+    }
+
+    /// <summary>
+    /// 1.获取任务列表的长度
+    /// 2.根据长度依次将任务数据载入任务列表中
+    /// </summary>
+    public void LoadQuestSystem()
+    {
+        questTaskList.Clear();
+
+        for (int i = 0; i < PlayerPrefs.GetInt("QuestCount"); i++)
+        {
+            var newQuestData = ScriptableObject.CreateInstance<QuestData_SO>();
+            SaveManager.Instance.LoadData(newQuestData, "Quest" + i);
+            questTaskList.Add(new QuestTask() {questDataSo = newQuestData});
+        }
+    }
+
+    /// <summary>
+    /// 1.保存任务列表的长度
+    /// 2.依次将任务列表的数据储存
+    /// </summary>
+    public void SaveQuestSystem()
+    {
+        PlayerPrefs.SetInt("QuestCount", questTaskList.Count);
+
+        for (int i = 0; i < questTaskList.Count; i++)
+        {
+            SaveManager.Instance.SaveData(questTaskList[i].questDataSo, "Quest" + i);
+        }
+    }
 
     /// <summary>
     /// 更新任务进度：

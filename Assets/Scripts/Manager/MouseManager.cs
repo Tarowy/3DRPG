@@ -20,7 +20,7 @@ public class MouseManager : Singleton<MouseManager>
         base.Awake();
         DontDestroyOnLoad(this);
     }
-    
+
     private void Update()
     {
         SetCursorTexture();
@@ -33,8 +33,15 @@ public class MouseManager : Singleton<MouseManager>
     private void SetCursorTexture()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        //如果鼠标位于UI之上就不改变鼠标的样子
+        if (InteractWithUI())
+        {
+            Cursor.SetCursor(arrow, Vector2.zero, CursorMode.Auto);
+            return;
+        }
         
-        if (Physics.Raycast(ray,out _hitInfo)) //Ray碰上了东西则是true，out返回碰撞到的Object的信息
+        if (Physics.Raycast(ray, out _hitInfo)) //Ray碰上了东西则是true，out返回碰撞到的Object的信息
         {
             //切换鼠标贴图
             switch (_hitInfo.collider.tag)
@@ -52,7 +59,7 @@ public class MouseManager : Singleton<MouseManager>
                     Cursor.SetCursor(point, new Vector2(16, 16), CursorMode.Auto);
                     break;
                 default:
-                    Cursor.SetCursor(arrow, new Vector2(16, 16), CursorMode.Auto);
+                    Cursor.SetCursor(arrow, Vector2.zero, CursorMode.Auto);
                     break;
             }
         }
@@ -67,18 +74,22 @@ public class MouseManager : Singleton<MouseManager>
             {
                 ONMouseClicked?.Invoke(_hitInfo.point); //如果ray碰到了地面则将点传到Unity的事件委托里
             }
+
             if (_hitInfo.collider.CompareTag("Enemy"))
             {
                 ONEnemyClicked?.Invoke(_hitInfo.collider.gameObject); //将鼠标点击到的敌人对象传递到委托的方法里去
             }
+
             if (_hitInfo.collider.CompareTag("Attackable"))
             {
                 ONEnemyClicked?.Invoke(_hitInfo.collider.gameObject);
             }
+
             if (_hitInfo.collider.CompareTag("Portal"))
             {
                 ONMouseClicked?.Invoke(_hitInfo.point);
             }
+
             if (_hitInfo.collider.CompareTag("Item"))
             {
                 ONMouseClicked?.Invoke(_hitInfo.point);
@@ -90,13 +101,8 @@ public class MouseManager : Singleton<MouseManager>
     /// 如果鼠标在UI之上就不执行人物的行走行为
     /// </summary>
     /// <returns></returns>
-    public bool InteractWithUI()
+    private bool InteractWithUI()
     {
-        if (EventSystem.current!=null&& EventSystem.current.IsPointerOverGameObject())
-        {
-            return true;
-        }
-
-        return false;
+        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
     }
 }

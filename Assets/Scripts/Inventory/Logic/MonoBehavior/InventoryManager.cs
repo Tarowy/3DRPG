@@ -45,7 +45,6 @@ public class InventoryManager : Singleton<InventoryManager>
         inventoryData = Instantiate(tempInventoryDataSo);
         actionData = Instantiate(tempActionData);
         equipmentData = Instantiate(tempEquipmentData);
-        // DontDestroyOnLoad(this);
     }
 
     private void Start()

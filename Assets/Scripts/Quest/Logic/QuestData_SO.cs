@@ -36,11 +36,6 @@ public class QuestData_SO : ScriptableObject
         var finishRequire = questRequires.Where(q => q.requireAmount <= q.currentAmount);
         //当前数量满足需求数量的结果集总数与任务集合总数相等则说明该任务已完成
         isCompleted = finishRequire.Count() == questRequires.Count;
-
-        if (isCompleted)
-        {
-            Debug.Log("任务完成");
-        }
     }
 
 

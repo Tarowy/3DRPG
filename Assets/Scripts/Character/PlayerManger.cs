@@ -110,7 +110,8 @@ public class PlayerManger : MonoBehaviour
     //Animation Event
     public void Hit()
     {
-        if (_attackTarget == null)
+        //如果攻击对象为空或者当前被暴击了就不执行攻击行为
+        if (_attackTarget == null||_animator.GetCurrentAnimatorStateInfo(1).IsName("GetHit"))
         {
             return;
         }

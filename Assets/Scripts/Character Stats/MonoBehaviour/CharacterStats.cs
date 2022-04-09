@@ -63,8 +63,13 @@ public class CharacterStats : MonoBehaviour
         if (attacker.isCritical)
         {
             defender.GetComponent<Animator>().SetTrigger("Hit");
+            defender.GetComponent<HealthBarUI>()?.CreateDamageShow(damage, true);
         }
-
+        else
+        {
+            defender.GetComponent<HealthBarUI>()?.CreateDamageShow(damage, false);
+        }
+        
         defender.UpdateHealthBarOnAttack?.Invoke(CurrentHealth, MaxHealth);
 
         if (CurrentHealth <= 0)

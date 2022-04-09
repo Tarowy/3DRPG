@@ -415,6 +415,7 @@ GameObject:
   - component: {fileID: 4777467319529988372}
   - component: {fileID: 1312481697066031710}
   - component: {fileID: -8934883313283475907}
+  - component: {fileID: 839094739}
   m_Layer: 6
   m_Name: Slime
   m_TagString: Enemy
@@ -546,6 +547,23 @@ MonoBehaviour:
     weight: 0.1
   - item: {fileID: 2709918416551089037, guid: b44d71f9ef377664b98c3340936548f0, type: 3}
     weight: 0.8
+--- !u!114 &839094739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4778080316170592832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29d26cef42c0724d8647541b545607c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthUIPrefab: {fileID: 1829788855512542310, guid: 7ce1c7c8f6508d741b10c9132bc7a6ca, type: 3}
+  healthBarPoint: {fileID: 0}
+  damageShow: {fileID: 1857015108168665405, guid: 4ef09280a85e90a4f9b175ec7111619a, type: 3}
+  alwaysVisible: 0
+  visibleTime: 3
 --- !u!1 &4778150064674294358
 GameObject:
   m_ObjectHideFlags: 0

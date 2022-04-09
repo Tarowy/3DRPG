@@ -5,7 +5,8 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - healthUIPrefab: {fileID: 1829788855512542310, guid: 7ce1c7c8f6508d741b10c9132bc7a6ca, type: 3}
-  - canvas: {instanceID: 0}
+  - healthBarPoint: {instanceID: 0}
+  - damageShow: {fileID: 1857015108168665405, guid: 4ef09280a85e90a4f9b175ec7111619a, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

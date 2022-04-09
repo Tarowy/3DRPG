@@ -5,34 +5,40 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-public enum EnemyStates{ GUARD, PATROL, CHASE, DEAD}
+public enum EnemyStates
+{
+    GUARD,
+    PATROL,
+    CHASE,
+    DEAD
+}
+
 [RequireComponent(typeof(NavMeshAgent))] //如果对象没有该组件会自动添加
 [RequireComponent(typeof(CharacterStats))]
-public class EnemyController : MonoBehaviour,IEndGameObserver
+public class EnemyController : MonoBehaviour, IEndGameObserver
 {
     public EnemyStates enemyStates;
-    
+    public HealthBarUI.EnemyType enemyType;
+
     private NavMeshAgent _navMeshAgent;
     protected GameObject attackTarget;
     private Animator _animator;
     private CharacterStats _characterStats;
     private Collider _collider;
 
-    [Header("Base Settings")] 
-    public float sightRadius; //检测sightRadius半径范围内的物体
+    [Header("Base Settings")] public float sightRadius; //检测sightRadius半径范围内的物体
     public bool isGuard; //此敌人是巡逻种类的还是站桩种类的
     public float lookAtTime; //到达目的地后的停留时间
-    
+
     private float _speed; //初始的速度
     private Vector3 _guardPos; //初始处于的位置
     private Quaternion _guardRotation; //初始的旋转角度
     private float _remainLookAtTime;
     private float _lastAttackTime;
 
-    [Header("Patrol State")] 
-    public float patrolRange;
+    [Header("Patrol State")] public float patrolRange;
     private Vector3 _wayPoint;
-    
+
     //动画变量
     private bool _isChase;
     private bool _isWalk;
@@ -45,18 +51,22 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         _animator = GetComponent<Animator>();
         _characterStats = GetComponent<CharacterStats>();
         _collider = GetComponent<Collider>();
-        
+
         _guardPos = transform.position;
         _speed = _navMeshAgent.speed;
         _remainLookAtTime = lookAtTime;
         _guardRotation = transform.rotation;
+
+        if (enemyType != HealthBarUI.EnemyType.BOSS) return;
+        GetComponent<HealthBarUI>().bossHealthUI.SetActive(false);
+        GetComponent<HealthBarUI>().bossHealthUI.GetComponent<CanvasGroup>().alpha = 1;
     }
-    
+
     private void OnDisable() //OnDisable是在销毁之后才执行的，OnDestroy是在销毁时执行的
     {
         if (GameManager.IsInitialized) return; //如果GameManager还未初始化，执行下面的会导致报错
         GameManager.Instance.RemoveObserver(this);
-        Debug.Log("执行掉落"+gameObject.name);
+        Debug.Log("执行掉落" + gameObject.name);
         //死亡的之后掉落物品
         if (GetComponent<LootSpawner>() && _isDeath)
         {
@@ -80,6 +90,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             enemyStates = EnemyStates.PATROL;
             GetNewWayPoint();
         }
+
         GameManager.Instance.AddObserver(this);
     }
 
@@ -87,7 +98,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     {
         _isDeath = _characterStats.CurrentHealth == 0;
         SwitchStates();
-        SwitchAnimation(); 
+        SwitchAnimation();
         _lastAttackTime -= Time.deltaTime;
     }
 
@@ -110,7 +121,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         {
             enemyStates = EnemyStates.CHASE;
         }
-        
+
         switch (enemyStates)
         {
             case EnemyStates.GUARD:
@@ -119,7 +130,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                     _isWalk = true;
                     _navMeshAgent.isStopped = false;
                     _navMeshAgent.destination = _guardPos;
-                    
+
                     //SqrMagnitude的开销比distance小
                     // Debug.Log("SqrMagnitude:"+Vector3.SqrMagnitude(_guardPos - transform.position));
                     if (Vector3.SqrMagnitude(_guardPos - transform.position) <= _navMeshAgent.stoppingDistance)
@@ -129,6 +140,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                         transform.rotation = Quaternion.Lerp(transform.rotation, _guardRotation, 0.01f);
                     }
                 }
+
                 break;
             case EnemyStates.PATROL:
                 _isChase = false;
@@ -136,9 +148,9 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 // _navMeshAgent.isStopped = false;
 
                 if (Vector3.Distance(_wayPoint, transform.position) <= _navMeshAgent.stoppingDistance)
-                { 
+                {
                     _isWalk = false;
-                    if (_remainLookAtTime > 0) 
+                    if (_remainLookAtTime > 0)
                         _remainLookAtTime -= Time.deltaTime;
                     else
                         GetNewWayPoint();
@@ -149,17 +161,21 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                     _navMeshAgent.destination = _wayPoint;
                 }
 
-                break; 
+                break;
             case EnemyStates.CHASE:
                 _isWalk = false;
                 _isChase = true;
-                
+
                 _navMeshAgent.speed = _speed; //追击的时候回到原来的速度
                 if (FoundPlayer())
                 {
                     _isFollow = true;
                     _navMeshAgent.isStopped = false;
                     _navMeshAgent.destination = attackTarget.transform.position;
+                    if (enemyType == HealthBarUI.EnemyType.BOSS)
+                    {
+                        GetComponent<HealthBarUI>().bossHealthUI.SetActive(true);
+                    }
                 }
                 else
                 {
@@ -168,12 +184,17 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                     if (_remainLookAtTime > 0)
                     {
                         _navMeshAgent.destination = transform.position; //拉脱之后仍会有一段余留速度，使其立马停止在原位
-                        _remainLookAtTime -= Time.deltaTime;  
+                        _remainLookAtTime -= Time.deltaTime;
                     }
-                    else if (isGuard) 
+                    else if (isGuard)
                         enemyStates = EnemyStates.GUARD;
-                    else 
+                    else
                         enemyStates = EnemyStates.PATROL;
+
+                    if (enemyType == HealthBarUI.EnemyType.BOSS)
+                    {
+                        GetComponent<HealthBarUI>().bossHealthUI.SetActive(false);
+                    }
                 }
 
                 //如果当前在挨打就不执行攻击行为
@@ -181,21 +202,21 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 {
                     return;
                 }
-                
+
                 //玩家在攻击范围内则进行攻击
                 if (TargetInSkillRange() || TargetInAttackRange()) //如果在技能范围内则不攻击，一直释放技能
                 {
                     _isFollow = false;
                     _navMeshAgent.isStopped = true;
-                    if (_lastAttackTime<=0)
+                    if (_lastAttackTime <= 0)
                     {
                         _lastAttackTime = _characterStats.attackDataSo.coolDown;
                         _characterStats.isCritical = Random.value <= _characterStats.attackDataSo.criticalChance;
                         Attack();
                     }
                 }
-                
-                break; 
+
+                break;
             case EnemyStates.DEAD:
                 _collider.enabled = false;
                 // _navMeshAgent.enabled = false;
@@ -213,7 +234,8 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         if (TargetInSkillRange())
         {
             _animator.SetTrigger("Skill");
-        }else if (TargetInAttackRange())
+        }
+        else if (TargetInAttackRange())
         {
             _animator.SetTrigger("Attack");
         }
@@ -222,7 +244,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     private bool FoundPlayer()
     {
         //返回sightRadius范围内所有的物体，物体需要有collider才能检测到
-        var overlapSphere = Physics.OverlapSphere(transform.position,sightRadius);
+        var overlapSphere = Physics.OverlapSphere(transform.position, sightRadius);
         foreach (var o in overlapSphere)
         {
             if (o.CompareTag("Player"))
@@ -253,7 +275,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     private void GetNewWayPoint()
     {
         _remainLookAtTime = lookAtTime; //复原停留时间
-        
+
         float randomX = Random.Range(-patrolRange, patrolRange);
         float randomY = Random.Range(-patrolRange, patrolRange);
 
@@ -267,16 +289,16 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     private void OnDrawGizmosSelected() //可以画出线条
     {
-        Gizmos.color=Color.red;
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, sightRadius); //有Wire则画的是线条，没有则是实心的
     }
-    
+
     //Animation Event
     public void Hit()
     {
         // Debug.Log(gameObject.name+"攻击");
         if (attackTarget is null) return; //由于敌人获取玩家的对象是自动的，所以相比于玩家的手动控制可能会丢失对象
-        
+
         if (transform.IsFacingTarget(attackTarget.transform)) //只有玩家在敌人的视野内才会受到攻击伤害
         {
             // Debug.Log("打着了");

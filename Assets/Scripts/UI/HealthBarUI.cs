@@ -6,13 +6,22 @@ using UnityEngine.UI;
 
 public class HealthBarUI : MonoBehaviour
 {
+    public enum EnemyType
+    {
+        BOSS,
+        NORMAL
+    }
+
     public GameObject healthUIPrefab;
-    
+    public GameObject bossHealthUI;
+
     private Image _sliderBar;
     private Transform _cam;
     private Transform _uiBar;
-    private Transform _healthBarPoint;
-    
+    public Transform healthBarPoint; //血条的位置
+    public DamageShow damageShow;
+    public EnemyType enemyType;
+
     public bool alwaysVisible;
     public float visibleTime;
     private float _visibleRemainTime;
@@ -22,8 +31,14 @@ public class HealthBarUI : MonoBehaviour
     private void Awake()
     {
         characterStats = GetComponent<CharacterStats>();
-        _healthBarPoint = transform.GetChild(0);
-        
+        healthBarPoint = transform.GetChild(0);
+
+        if (enemyType == EnemyType.BOSS)
+        {
+            bossHealthUI = GameObject.Find("BossHealth");
+            bossHealthUI.transform.GetChild(1).GetComponent<Text>().text = gameObject.name;
+        }
+
         characterStats.UpdateHealthBarOnAttack += UpdateHealthBar;
     }
 
@@ -31,39 +46,66 @@ public class HealthBarUI : MonoBehaviour
     {
         if (Camera.main is { }) _cam = Camera.main.transform;
 
-        foreach (var canvas in GameObject.FindObjectsOfType<Canvas>())
+        switch (enemyType)
         {
-            if (canvas.renderMode==RenderMode.WorldSpace)
-            {
-                _uiBar = Instantiate(healthUIPrefab,canvas.transform).transform;
-                _uiBar.position = _healthBarPoint.position;
-                _sliderBar = _uiBar.GetChild(0).GetComponent<Image>();
-                _uiBar.gameObject.SetActive(alwaysVisible);
-            }
+            case EnemyType.BOSS:
+                _sliderBar = bossHealthUI.transform.GetChild(0).GetComponent<Image>();
+                break;
+            
+            case EnemyType.NORMAL: //不是Boss则生成小血条
+                foreach (var canvas in FindObjectsOfType<Canvas>())
+                {
+                    if (canvas.renderMode == RenderMode.WorldSpace)
+                    {
+                        _uiBar = Instantiate(healthUIPrefab, canvas.transform).transform;
+                        _uiBar.position = healthBarPoint.position;
+                        _sliderBar = _uiBar.GetChild(0).GetComponent<Image>();
+                        _uiBar.gameObject.SetActive(alwaysVisible);
+                        break;
+                    }
+                }
+                break;
         }
     }
 
     private void UpdateHealthBar(int currentHealth, int maxHealth)
     {
-        if (currentHealth <= 0)
+        switch (enemyType)
         {
-            characterStats.UpdateHealthBarOnAttack -= UpdateHealthBar;
-            Destroy(_uiBar.gameObject);
-            return;
-        }
+            case EnemyType.BOSS:
+                if (currentHealth <= 0)
+                {
+                    characterStats.UpdateHealthBarOnAttack -= UpdateHealthBar;
+                    bossHealthUI.SetActive(false);
+                    return;
+                }
 
-        _visibleRemainTime = visibleTime;
-        
-        _uiBar.gameObject.SetActive(true); //每次被攻击后UI强行设置为可见
-        _sliderBar.fillAmount = (float) currentHealth / maxHealth;
+                _sliderBar.fillAmount = (float) currentHealth / maxHealth;
+                break;
+
+            case EnemyType.NORMAL:
+                if (currentHealth <= 0)
+                {
+                    characterStats.UpdateHealthBarOnAttack -= UpdateHealthBar;
+                    Destroy(_uiBar.gameObject);
+                    return;
+                }
+
+                _visibleRemainTime = visibleTime;
+
+                _uiBar.gameObject.SetActive(true); //每次被攻击后UI强行设置为可见
+                _sliderBar.fillAmount = (float) currentHealth / maxHealth;
+                break;
+        }
     }
 
     private void LateUpdate()
     {
+        if (enemyType != EnemyType.NORMAL) return;
         if (_uiBar == null) return;
 
-        _uiBar.position = _healthBarPoint.position;
-        _uiBar.forward = -_cam.forward; //使血条的方向始终朝着摄像机
+        _uiBar.position = healthBarPoint.position;
+        _uiBar.forward = _cam.forward; //使血条的方向始终朝着摄像机
 
         if (_visibleRemainTime <= 0 && !alwaysVisible)
         {
@@ -73,5 +115,15 @@ public class HealthBarUI : MonoBehaviour
         {
             _visibleRemainTime -= Time.deltaTime;
         }
+    }
+
+    public void CreateDamageShow(int damage, bool isCritical)
+    {
+        var damageShowIns = Instantiate(damageShow, transform);
+        damageShowIns.isCritical = isCritical;
+        damageShowIns.cam = _cam;
+        damageShowIns.damage = damage;
+        damageShowIns.transform.position = healthBarPoint.position + new Vector3(0, 0.3f, 0);
+        damageShowIns.targetPosition = healthBarPoint.position + new Vector3(0, 1.5f, 0);
     }
 }

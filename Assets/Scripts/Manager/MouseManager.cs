@@ -40,7 +40,7 @@ public class MouseManager : Singleton<MouseManager>
             Cursor.SetCursor(arrow, Vector2.zero, CursorMode.Auto);
             return;
         }
-        
+
         if (Physics.Raycast(ray, out _hitInfo)) //Ray碰上了东西则是true，out返回碰撞到的Object的信息
         {
             //切换鼠标贴图
@@ -58,8 +58,18 @@ public class MouseManager : Singleton<MouseManager>
                 case "Item":
                     Cursor.SetCursor(point, new Vector2(16, 16), CursorMode.Auto);
                     break;
+                case "Attackable":
+                    Cursor.SetCursor(attack, new Vector2(16, 16), CursorMode.Auto);
+                    break;
                 default:
-                    Cursor.SetCursor(arrow, Vector2.zero, CursorMode.Auto);
+                    if (_hitInfo.collider.isTrigger) //碰撞器是Trigger的时候还是使用地面的指针
+                    {
+                        Cursor.SetCursor(target, new Vector2(16, 16), CursorMode.Auto);
+                    }
+                    else
+                    {
+                        Cursor.SetCursor(arrow, Vector2.zero, CursorMode.Auto);
+                    }
                     break;
             }
         }
@@ -70,7 +80,7 @@ public class MouseManager : Singleton<MouseManager>
         if (Input.GetMouseButtonDown(0) && _hitInfo.collider != null)
         {
             // Debug.Log(GameManager.Instance.playerStats + "移动");
-            if (_hitInfo.collider.CompareTag("Ground"))
+            if (_hitInfo.collider.CompareTag("Ground") || _hitInfo.collider.isTrigger) //防止是Trigger碰撞器的时候人物不行走
             {
                 ONMouseClicked?.Invoke(_hitInfo.point); //如果ray碰到了地面则将点传到Unity的事件委托里
             }

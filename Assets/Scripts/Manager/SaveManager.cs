@@ -8,6 +8,7 @@ using Object = System.Object;
 public class SaveManager : Singleton<SaveManager>
 {
     private string _sceneName = "LEVEL"; //退出游戏时保存当前的场景名称，以便继续游戏可以重回到此场景
+    public bool blockKey;
 
     public string SceneName => PlayerPrefs.GetString(_sceneName);
 
@@ -19,6 +20,9 @@ public class SaveManager : Singleton<SaveManager>
     
     private void Update()
     {
+        //角色死亡后便不可操作
+        if (blockKey) return;
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SceneController.Instance.TransitionToMainMenu();

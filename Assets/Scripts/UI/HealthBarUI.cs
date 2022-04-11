@@ -6,12 +6,6 @@ using UnityEngine.UI;
 
 public class HealthBarUI : MonoBehaviour
 {
-    public enum EnemyType
-    {
-        BOSS,
-        NORMAL
-    }
-
     public GameObject healthUIPrefab;
     public GameObject bossHealthUI;
 
@@ -20,7 +14,7 @@ public class HealthBarUI : MonoBehaviour
     private Transform _uiBar;
     public Transform healthBarPoint; //血条的位置
     public DamageShow damageShow;
-    public EnemyType enemyType;
+    private EnemyType _enemyType;
 
     public bool alwaysVisible;
     public float visibleTime;
@@ -32,10 +26,10 @@ public class HealthBarUI : MonoBehaviour
     {
         characterStats = GetComponent<CharacterStats>();
         healthBarPoint = transform.GetChild(0);
+        _enemyType = GetComponent<EnemyController>().enemyType;
 
-        if (enemyType == EnemyType.BOSS)
+        if (_enemyType == EnemyType.BOSS)
         {
-            bossHealthUI = GameObject.Find("BossHealth");
             bossHealthUI.transform.GetChild(1).GetComponent<Text>().text = gameObject.name;
         }
 
@@ -46,7 +40,7 @@ public class HealthBarUI : MonoBehaviour
     {
         if (Camera.main is { }) _cam = Camera.main.transform;
 
-        switch (enemyType)
+        switch (_enemyType)
         {
             case EnemyType.BOSS:
                 _sliderBar = bossHealthUI.transform.GetChild(0).GetComponent<Image>();
@@ -70,7 +64,7 @@ public class HealthBarUI : MonoBehaviour
 
     private void UpdateHealthBar(int currentHealth, int maxHealth)
     {
-        switch (enemyType)
+        switch (_enemyType)
         {
             case EnemyType.BOSS:
                 if (currentHealth <= 0)
@@ -101,7 +95,7 @@ public class HealthBarUI : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (enemyType != EnemyType.NORMAL) return;
+        if (_enemyType != EnemyType.NORMAL) return;
         if (_uiBar == null) return;
 
         _uiBar.position = healthBarPoint.position;

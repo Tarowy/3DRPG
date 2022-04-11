@@ -13,12 +13,19 @@ public enum EnemyStates
     DEAD
 }
 
+public enum EnemyType
+{
+    BOSS,
+    NORMAL
+}
+
 [RequireComponent(typeof(NavMeshAgent))] //如果对象没有该组件会自动添加
 [RequireComponent(typeof(CharacterStats))]
 public class EnemyController : MonoBehaviour, IEndGameObserver
 {
     public EnemyStates enemyStates;
-    public HealthBarUI.EnemyType enemyType;
+    public EnemyType enemyType;
+    private GameObject _bossHealthUI;
 
     private NavMeshAgent _navMeshAgent;
     protected GameObject attackTarget;
@@ -57,23 +64,24 @@ public class EnemyController : MonoBehaviour, IEndGameObserver
         _remainLookAtTime = lookAtTime;
         _guardRotation = transform.rotation;
 
-        if (enemyType != HealthBarUI.EnemyType.BOSS) return;
-        GetComponent<HealthBarUI>().bossHealthUI.SetActive(false);
-        GetComponent<HealthBarUI>().bossHealthUI.GetComponent<CanvasGroup>().alpha = 1;
+        if (enemyType != EnemyType.BOSS) return;
+        _bossHealthUI = GetComponent<HealthBarUI>().bossHealthUI;
+        _bossHealthUI.SetActive(false);
+        _bossHealthUI.GetComponent<CanvasGroup>().alpha = 1;
     }
 
     private void OnDisable() //OnDisable是在销毁之后才执行的，OnDestroy是在销毁时执行的
     {
         if (GameManager.IsInitialized) return; //如果GameManager还未初始化，执行下面的会导致报错
         GameManager.Instance.RemoveObserver(this);
-        Debug.Log("执行掉落" + gameObject.name);
+        
         //死亡的之后掉落物品
         if (GetComponent<LootSpawner>() && _isDeath)
         {
             GetComponent<LootSpawner>().SpawnLoot();
         }
 
-        if (!QuestManager.IsInitialized && _isDeath)
+        if (!QuestManager.IsInitialized && _characterStats.CurrentHealth == 0)
         {
             QuestManager.Instance.UpdateQuestProgress(this.name, 1);
         }
@@ -172,9 +180,9 @@ public class EnemyController : MonoBehaviour, IEndGameObserver
                     _isFollow = true;
                     _navMeshAgent.isStopped = false;
                     _navMeshAgent.destination = attackTarget.transform.position;
-                    if (enemyType == HealthBarUI.EnemyType.BOSS)
+                    if (enemyType == EnemyType.BOSS)
                     {
-                        GetComponent<HealthBarUI>().bossHealthUI.SetActive(true);
+                        _bossHealthUI.SetActive(true);
                     }
                 }
                 else
@@ -191,9 +199,9 @@ public class EnemyController : MonoBehaviour, IEndGameObserver
                     else
                         enemyStates = EnemyStates.PATROL;
 
-                    if (enemyType == HealthBarUI.EnemyType.BOSS)
+                    if (enemyType == EnemyType.BOSS)
                     {
-                        GetComponent<HealthBarUI>().bossHealthUI.SetActive(false);
+                        _bossHealthUI.SetActive(false);
                     }
                 }
 

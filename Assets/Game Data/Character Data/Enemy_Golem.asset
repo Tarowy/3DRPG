@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a1e61d8e09d48d4999320043c55b8eb, type: 3}
   m_Name: Enemy_Golem
   m_EditorClassIdentifier: 
-  maxHealth: 80
-  currentHealth: 80
-  baseDefence: 5
-  currentDefence: 5
+  maxHealth: 250
+  currentHealth: 250
+  baseDefence: 8
+  currentDefence: 8
   killPoint: 100
   currentLevel: 0
   maxLevel: 0

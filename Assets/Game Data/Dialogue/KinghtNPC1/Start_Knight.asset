@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaedc1f7db5f2674eb5b01c0041a18bf, type: 3}
+  m_Name: Start_Knight
+  m_EditorClassIdentifier: 
+  dialoguePieces:
+  - id: 01
+    image: {fileID: 21300000, guid: 4ae1467a256f0ea4ea4f542aee64052b, type: 3}
+    text: How are you?
+    questDataSo: {fileID: 0}
+    options:
+    - text: I am fine,thank you,and you?
+      targetID: 02
+      taskQuest: 0
+    - text: I am bad
+      targetID: 
+      taskQuest: 0
+  - id: 02
+    image: {fileID: 21300000, guid: 4ae1467a256f0ea4ea4f542aee64052b, type: 3}
+    text: "\u6211\u662F\u4E2A\u8BF4\u660E\u4E66\uFF0C\u6765\u8BF4\u8BF4\u64CD\u4F5C\u65B9\u5F0F\u5427"
+    questDataSo: {fileID: 0}
+    options: []
+  - id: 03
+    image: {fileID: 21300000, guid: 4ae1467a256f0ea4ea4f542aee64052b, type: 3}
+    text: "\u9F20\u6807\u6EDA\u8F6E\u4E0A\u4E0B\u6EDA\u52A8\u53EF\u4EE5\u8C03\u6574\u89C6\u89D2\u9AD8\u5EA6\uFF0CA\u548CD\u5DE6\u53F3\u79FB\u52A8\u89C6\u89D2\uFF1B\u9760\u8FD1\u4F20\u9001\u95E8\u6309E\u53EF\u4EE5\u4F20\u9001\u5230\u4E0B\u4E00\u4E2A\u623F\u95F4"
+    questDataSo: {fileID: 0}
+    options: []
+  - id: 04
+    image: {fileID: 21300000, guid: 4ae1467a256f0ea4ea4f542aee64052b, type: 3}
+    text: "Q\u53EF\u4EE5\u6253\u88C5\u5907\u548C\u80CC\u5305\u680F\u4F4D\uFF0C\u5C4F\u5E55\u4E0B\u9762\u7684\u69FD\u4F4D\u662F\u5FEB\u6377\u680F\u53EA\u6709\u80FD\u4F7F\u7528\u7684\u7269\u54C1\u624D\u53EF\u4EE5\u653E\u4E0A\u53BB\uFF1B\u5DE6\u4FA7\u662F\u88C5\u5907\u680F\uFF0C\u62D6\u62FD\u88C5\u5907\u5230\u5BF9\u5E94\u7684\u680F\u4F4D\u4E0A\u53EF\u4EE5\u88C5\u5907\u6B66\u5668\uFF1B\u5728\u80CC\u5305\u6216\u8005\u5FEB\u6377\u680F\u53CC\u51FB\u53EF\u4F7F\u7528\u7269\u54C1\u5373\u53EF\u4F7F\u7528\uFF0C\u5FEB\u6377\u680F\u4E2D\u7684\u7269\u54C1\u4E5F\u53EF\u4EE5\u6309\u5BF9\u5E94\u7684\u5C0F\u952E\u76D8\u6570\u5B57\u5FEB\u6377\u4F7F\u7528"
+    questDataSo: {fileID: 0}
+    options: []
+  - id: 05
+    image: {fileID: 21300000, guid: 4ae1467a256f0ea4ea4f542aee64052b, type: 3}
+    text: "T\u53EF\u4EE5\u6253\u5F00\u4EFB\u52A1\u680F\uFF0C\u53EF\u4EE5\u67E5\u770B\u4EFB\u52A1\u7684\u8FDB\u5EA6\u4EE5\u53CA\u4EFB\u52A1\u7684\u5956\u52B1"
+    questDataSo: {fileID: 0}
+    options: []
+  - id: 06
+    image: {fileID: 21300000, guid: 4ae1467a256f0ea4ea4f542aee64052b, type: 3}
+    text: "\u6309S\u53EF\u4EE5\u5FEB\u901F\u4FDD\u5B58\u5F53\u524D\u7684\u8840\u91CF\u3001\u7B49\u7EA7\uFF1B\u6309L\u53EF\u4EE5\u5FEB\u901F\u8BFB\u53D6\uFF0CESC\u53EF\u4EE5\u56DE\u5230\u4E3B\u83DC\u5355\uFF0C\u4F1A\u4FDD\u5B58\u4EBA\u7269\u72B6\u6001"
+    questDataSo: {fileID: 0}
+    options: []
+  questInThisDialogueDataSo: {fileID: 0}

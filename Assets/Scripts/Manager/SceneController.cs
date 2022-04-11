@@ -8,15 +8,17 @@ using UnityEngine.SceneManagement;
 public class SceneController : Singleton<SceneController>,IEndGameObserver
 {
     public GameObject playerPrefab;
+    //本场景传送时用来临时储存player的GameObject，防止playerPrefab被clone的player取代
+    private GameObject _tempPlayer;
     public FadeCanvas fadeCanvasPrefab;
-    private bool _fadeFinished;
+    public bool fadeFinished;
     
     protected override void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(this);
 
-        _fadeFinished = true;
+        fadeFinished = true;
     }
 
     private void Start()
@@ -37,9 +39,8 @@ public class SceneController : Singleton<SceneController>,IEndGameObserver
             case TransitionPoint.TransitionType.SameScene:
                 //SceneManager.GetActiveScene()可以获取当前激活场景的信息
                 StartCoroutine(Transition(SceneManager.GetActiveScene().name, transitionPoint.destinationTag));
-                playerPrefab.GetComponent<NavMeshAgent>().isStopped = true;
                 break;
-            
+
             case TransitionPoint.TransitionType.DifferentScene:
                 StartCoroutine(Transition(transitionPoint.sceneName, transitionPoint.destinationTag));
                 break;
@@ -69,10 +70,14 @@ public class SceneController : Singleton<SceneController>,IEndGameObserver
         }
         else
         {
-            playerPrefab = GameManager.Instance.playerStats.gameObject;
+            _tempPlayer = GameManager.Instance.playerStats.gameObject;
+            _tempPlayer.GetComponent<NavMeshAgent>().enabled = false;
             var destination = GetTransitionDestination(destinationTag).transform;
-            playerPrefab.transform.SetPositionAndRotation(destination.position,destination.rotation);
-            yield return null;
+            var position = destination.position;
+            Debug.Log("TransForm："+position);
+            _tempPlayer.transform.SetPositionAndRotation(position,destination.rotation);
+            _tempPlayer.GetComponent<NavMeshAgent>().enabled = true;
+            // yield break;
         }
     }
 
@@ -123,6 +128,7 @@ public class SceneController : Singleton<SceneController>,IEndGameObserver
             
             SaveManager.Instance.SavaData();
             InventoryManager.Instance.SaveData();
+            SaveManager.Instance.blockKey = false;
             yield return StartCoroutine(fadeCanvas.FadeIn(2f));
         }
     }
@@ -145,18 +151,21 @@ public class SceneController : Singleton<SceneController>,IEndGameObserver
         InventoryManager.Instance.SaveData();
         //保存任务数据
         QuestManager.Instance.SaveQuestSystem();
+        SaveManager.Instance.blockKey = true;
         yield return SceneManager.LoadSceneAsync("Main");
+        fadeFinished = true;
         yield return StartCoroutine(fadeCanvas.FadeIn(2f));
     }
     
     public void EndNotify()
     {
         //GameManager会循环执行此方法，必须加条件使其无法循环执行
-        if (_fadeFinished)
+        if (fadeFinished)
         {
-            _fadeFinished = false;
+            fadeFinished = false;
             //人物死亡，删除所有数据，返回主菜单
             PlayerPrefs.DeleteAll();
+            QuestManager.Instance.questTaskList.Clear();
             StartCoroutine(LoadMain());
         }
     }

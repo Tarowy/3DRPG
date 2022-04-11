@@ -147,7 +147,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rockStates: 0
-  force: 20
+  stopDistance: 3.5
+  force: 15
   target: {fileID: 0}
-  damage: 8
+  damage: 20
   rockBreak: {fileID: 2016578091266092855, guid: 78d602e6acd71fc4a91081473a55ea89, type: 3}

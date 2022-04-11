@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class DialogueController : MonoBehaviour
 {
+    public GameObject notice;
     public DialogueData_SO currentDialogueDataSo;
     public bool canTalk;
 
@@ -12,6 +13,7 @@ public class DialogueController : MonoBehaviour
     {
         if (other.CompareTag("Player") && currentDialogueDataSo != null)
         {
+            notice.SetActive(true);
             canTalk = true;
         }
     }
@@ -20,6 +22,7 @@ public class DialogueController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            notice.SetActive(false);
             canTalk = false;
             DialogueUI.Instance.dialoguePanel.SetActive(false);
         }

@@ -485,6 +485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyStates: 0
+  enemyType: 1
   sightRadius: 8
   isGuard: 1
   lookAtTime: 3
@@ -560,8 +561,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthUIPrefab: {fileID: 1829788855512542310, guid: 7ce1c7c8f6508d741b10c9132bc7a6ca, type: 3}
+  bossHealthUI: {fileID: 0}
   healthBarPoint: {fileID: 0}
   damageShow: {fileID: 1857015108168665405, guid: 4ef09280a85e90a4f9b175ec7111619a, type: 3}
+  enemyType: 1
   alwaysVisible: 0
   visibleTime: 3
 --- !u!1 &4778150064674294358

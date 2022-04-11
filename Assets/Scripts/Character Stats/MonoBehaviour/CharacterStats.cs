@@ -57,7 +57,9 @@ public class CharacterStats : MonoBehaviour
 
     public void TakeDamage(CharacterStats attacker, CharacterStats defender)
     {
-        int damage = Mathf.Max(attacker.CurrentDamage() - defender.CurrentDefence, 0); //防止对手的防御力大于攻击者的攻击力出现负值导致对手反而加血
+        var currentDamage = attacker.CurrentDamage();
+        int damage = Mathf.Max(currentDamage - defender.CurrentDefence, 0); //防止对手的防御力大于攻击者的攻击力出现负值导致对手反而加血
+        
         defender.CurrentHealth = Mathf.Max(defender.CurrentHealth - damage, 0); //防止血量变为负数
 
         if (attacker.isCritical)
@@ -69,12 +71,16 @@ public class CharacterStats : MonoBehaviour
         {
             defender.GetComponent<HealthBarUI>()?.CreateDamageShow(damage, false);
         }
-        
+
         defender.UpdateHealthBarOnAttack?.Invoke(CurrentHealth, MaxHealth);
 
-        if (CurrentHealth <= 0)
+        /*
+         * 此处存在过的bug:defender.CurrentHealth没有加defender导致角色打死怪物后
+         * 怪物疯狂升级导致血量一直疯涨
+         */
+        if (defender.CurrentHealth <= 0)
         {
-            StartCoroutine(attacker.characterDataSo.UpdateExp(characterDataSo.killPoint));
+            StartCoroutine(attacker.characterDataSo.UpdateExp(defender.characterDataSo.killPoint));
         }
     }
 
@@ -150,7 +156,7 @@ public class CharacterStats : MonoBehaviour
     public bool ApplyHealth(int amount)
     {
         //满血就不回复
-        if (CurrentHealth==MaxHealth)
+        if (CurrentHealth == MaxHealth)
         {
             return false;
         }

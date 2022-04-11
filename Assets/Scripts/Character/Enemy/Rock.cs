@@ -9,6 +9,7 @@ public class Rock : MonoBehaviour
     public enum RockStates { HitPlayer,HitEnemy,HitNothing }
     private Rigidbody _rigidbody;
     public RockStates rockStates;
+    public float stopDistance;
 
     [Header("Basic Settings")] 
     public float force;
